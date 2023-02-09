@@ -56,7 +56,34 @@ namespace PNG_SD_Info_Viewer
 
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+
+
+        private void btnSelectFolder_Click(object sender, EventArgs e)
+        {
+
+            // Grab the folder
+            var fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+
+                // Got a new folder so clear the stuffs
+                // Clear the stuffs
+                lstbFilelist.Items.Clear();
+                txtParameters.Text = "";
+                picbImageDisplay.Image = null;
+
+
+                // Store the path selected
+                openPath = fbd.SelectedPath;
+                lblFolderSelected.Text = openPath;
+
+                // Pull up the image list in the folder
+                findImagesInDirectory(fbd.SelectedPath);
+            }
+        }
+
+        private void lstbFilelist_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Clear the stuffs
             txtParameters.Text = "";
@@ -65,7 +92,7 @@ namespace PNG_SD_Info_Viewer
             string selectedImage = lstbFilelist.GetItemText(lstbFilelist.SelectedItem);
 
             picbImageDisplay.ImageLocation = openPath + "\\" + selectedImage;
-            
+
 
 
             // EXIF
@@ -91,37 +118,15 @@ namespace PNG_SD_Info_Viewer
                         parsed = parsed.Replace("Denoising strength:", "\r\nDenoising strength:");
 
                         //txtParameters.Text += ($"{tag.Description}");
-                        txtParameters.Text+= parsed;
+                        txtParameters.Text += parsed;
                     }
                 }
 
-            
-
         }
 
-        private void btnSelectFolder_Click(object sender, EventArgs e)
+        private void btnCopy_Click(object sender, EventArgs e)
         {
-
-            // Grab the folder
-            var fbd = new FolderBrowserDialog();
-            DialogResult result = fbd.ShowDialog();
-            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-            {
-
-                // Got a new folder so clear the stuffs
-                // Clear the stuffs
-                lstbFilelist.Items.Clear();
-                txtParameters.Text = "";
-                picbImageDisplay.Image = null;
-
-
-                // Store the path selected
-                openPath = fbd.SelectedPath;
-                lblFolderSelected.Text = openPath;
-
-                // Pull up the image list in the folder
-                findImagesInDirectory(fbd.SelectedPath);
-            }
+            Clipboard.SetText(txtParameters.Text);
         }
     }
 }

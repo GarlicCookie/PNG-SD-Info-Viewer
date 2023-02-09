@@ -37,6 +37,7 @@
             this.lblImage = new System.Windows.Forms.Label();
             this.lblParameters = new System.Windows.Forms.Label();
             this.lblFolderSelected = new System.Windows.Forms.Label();
+            this.btnCopy = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,7 +74,7 @@
             this.lstbFilelist.Name = "lstbFilelist";
             this.lstbFilelist.Size = new System.Drawing.Size(343, 604);
             this.lstbFilelist.TabIndex = 2;
-            this.lstbFilelist.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.lstbFilelist.SelectedIndexChanged += new System.EventHandler(this.lstbFilelist_SelectedIndexChanged);
             // 
             // txtParameters
             // 
@@ -122,11 +123,22 @@
             this.lblFolderSelected.Size = new System.Drawing.Size(0, 15);
             this.lblFolderSelected.TabIndex = 7;
             // 
+            // btnCopy
+            // 
+            this.btnCopy.Location = new System.Drawing.Point(1132, 459);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(75, 23);
+            this.btnCopy.TabIndex = 8;
+            this.btnCopy.Text = "Copy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1225, 687);
+            this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.lblFolderSelected);
             this.Controls.Add(this.lblParameters);
             this.Controls.Add(this.lblImage);
@@ -154,5 +166,6 @@
         private Label lblImage;
         private Label lblParameters;
         private Label lblFolderSelected;
+        private Button btnCopy;
     }
 }
