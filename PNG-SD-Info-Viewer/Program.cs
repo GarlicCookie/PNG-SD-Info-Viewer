@@ -4,6 +4,7 @@ namespace PNG_SD_Info_Viewer
     {
         /// <summary>
         ///  The main entry point for the application.
+        ///  GarlicCookie!
         /// </summary>
         [STAThread]
         static void Main()
