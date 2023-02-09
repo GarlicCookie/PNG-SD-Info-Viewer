@@ -79,7 +79,19 @@ namespace PNG_SD_Info_Viewer
                     {
                         //textBox1.Text += ($"{directory.Name} \r\n - {tag.Name} = {tag.Description}");
                         //textBox1.Text += "\n";
-                        txtParameters.Text += ($"{tag.Description}");
+
+                        // Parse text
+                        string parsed = ($"{tag.Description}").Replace("Negative prompt:", "\r\n\r\nNegative Prompt:");
+                        parsed = parsed.Replace("Steps:", "\r\n\r\nSteps:");
+                        parsed = parsed.Replace("Sampler:", "\r\nSampler:");
+                        parsed = parsed.Replace("CFG scale:", "\r\nCFG scale:");
+                        parsed = parsed.Replace("Size:", "\r\nSize:");
+                        parsed = parsed.Replace("Model hash:", "\r\nModel hash:");
+                        parsed = parsed.Replace("Model:", "\r\nModel:");
+                        parsed = parsed.Replace("Denoising strength:", "\r\nDenoising strength:");
+
+                        //txtParameters.Text += ($"{tag.Description}");
+                        txtParameters.Text+= parsed;
                     }
                 }
 
