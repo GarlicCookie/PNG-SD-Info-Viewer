@@ -7,7 +7,18 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>00137-2000916955.ico</ApplicationIcon>
+    <Title>PNG-SD-Info-Viewer</Title>
+    <Version>$(VersionPrefix)</Version>
+    <Authors>$(AssemblyName), GarlicCookie</Authors>
+    <Copyright>© 2023 - GNU GPL3, see GitHub for details</Copyright>
+    <Company>$(Authors), GarlicCookie</Company>
+    <Description>PNG-SD-Info-Viewer by GarlicCookie</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="00137-2000916955.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MetadataExtractor" Version="2.7.2" />
