@@ -99,8 +99,11 @@ namespace PNG_SD_Info_Viewer
                 // Add item to listbox
                 lstbFilelist.Items.Add(file.Name);
 
-                // Add filename to imgList object, with the full path as a key.  Might use the keyname later to lookup an image.
-                imgList.Images.Add(file.FullName, Image.FromFile(file.FullName));
+                // Add filename to imgList object, with the full path as a key.  Might use the keyname later to lookup an image.  Only do this if we are using a DGV to save CPU and memory!
+                if (dgvMain.Visible == true)
+                {
+                    imgList.Images.Add(file.FullName, Image.FromFile(file.FullName));
+                }
             }
 
             // Add items to the DGV if it is active
