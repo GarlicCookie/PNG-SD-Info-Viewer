@@ -41,6 +41,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,7 +52,6 @@
             this.pxToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvMain = new System.Windows.Forms.DataGridView();
             this.lblFilename = new System.Windows.Forms.Label();
-            this.quitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
@@ -171,14 +171,21 @@
             this.quitToolStripMenuItem1});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Text = "&File";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // quitToolStripMenuItem1
+            // 
+            this.quitToolStripMenuItem1.Name = "quitToolStripMenuItem1";
+            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.quitToolStripMenuItem1.Text = "&Quit";
+            this.quitToolStripMenuItem1.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // menuToolStripMenuItem
             // 
@@ -187,20 +194,20 @@
             this.imageListToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.menuToolStripMenuItem.Text = "List";
+            this.menuToolStripMenuItem.Text = "&List";
             // 
             // fileListToolStripMenuItem
             // 
             this.fileListToolStripMenuItem.Name = "fileListToolStripMenuItem";
             this.fileListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fileListToolStripMenuItem.Text = "File List";
+            this.fileListToolStripMenuItem.Text = "&File List";
             this.fileListToolStripMenuItem.Click += new System.EventHandler(this.fileListToolStripMenuItem_Click);
             // 
             // imageListToolStripMenuItem
             // 
             this.imageListToolStripMenuItem.Name = "imageListToolStripMenuItem";
             this.imageListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.imageListToolStripMenuItem.Text = "Image List";
+            this.imageListToolStripMenuItem.Text = "&Image List";
             this.imageListToolStripMenuItem.Click += new System.EventHandler(this.imageListToolStripMenuItem_Click);
             // 
             // sizeToolStripMenuItem
@@ -209,7 +216,7 @@
             this.imageListWidthToolStripMenuItem});
             this.sizeToolStripMenuItem.Name = "sizeToolStripMenuItem";
             this.sizeToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
-            this.sizeToolStripMenuItem.Text = "Size";
+            this.sizeToolStripMenuItem.Text = "&Size";
             // 
             // imageListWidthToolStripMenuItem
             // 
@@ -219,27 +226,27 @@
             this.pxToolStripMenuItem2});
             this.imageListWidthToolStripMenuItem.Name = "imageListWidthToolStripMenuItem";
             this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.imageListWidthToolStripMenuItem.Text = "Image List Width";
+            this.imageListWidthToolStripMenuItem.Text = "&Image List Width";
             // 
             // pxToolStripMenuItem
             // 
             this.pxToolStripMenuItem.Name = "pxToolStripMenuItem";
-            this.pxToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-            this.pxToolStripMenuItem.Text = "64px";
+            this.pxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem.Text = "&64px";
             this.pxToolStripMenuItem.Click += new System.EventHandler(this.pxToolStripMenuItem_Click);
             // 
             // pxToolStripMenuItem1
             // 
             this.pxToolStripMenuItem1.Name = "pxToolStripMenuItem1";
-            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(105, 22);
-            this.pxToolStripMenuItem1.Text = "128px";
+            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem1.Text = "&128px";
             this.pxToolStripMenuItem1.Click += new System.EventHandler(this.pxToolStripMenuItem1_Click);
             // 
             // pxToolStripMenuItem2
             // 
             this.pxToolStripMenuItem2.Name = "pxToolStripMenuItem2";
-            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(105, 22);
-            this.pxToolStripMenuItem2.Text = "256px";
+            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem2.Text = "&256px";
             this.pxToolStripMenuItem2.Click += new System.EventHandler(this.pxToolStripMenuItem2_Click);
             // 
             // dgvMain
@@ -273,13 +280,6 @@
             this.lblFilename.Size = new System.Drawing.Size(68, 15);
             this.lblFilename.TabIndex = 12;
             this.lblFilename.Text = "lblFilename";
-            // 
-            // quitToolStripMenuItem1
-            // 
-            this.quitToolStripMenuItem1.Name = "quitToolStripMenuItem1";
-            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.quitToolStripMenuItem1.Text = "Quit";
-            this.quitToolStripMenuItem1.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // frmMain
             // 
