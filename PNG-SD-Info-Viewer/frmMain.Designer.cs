@@ -59,7 +59,8 @@
             // 
             // picbImageDisplay
             // 
-            this.picbImageDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.picbImageDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picbImageDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picbImageDisplay.Location = new System.Drawing.Point(361, 70);
@@ -94,8 +95,7 @@
             // 
             // txtParameters
             // 
-            this.txtParameters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtParameters.Location = new System.Drawing.Point(361, 484);
             this.txtParameters.Multiline = true;
@@ -124,6 +124,8 @@
             // 
             // lblParameters
             // 
+            this.lblParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblParameters.AutoSize = true;
             this.lblParameters.Location = new System.Drawing.Point(361, 466);
             this.lblParameters.Name = "lblParameters";
@@ -142,6 +144,7 @@
             // 
             // btnCopy
             // 
+            this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCopy.Location = new System.Drawing.Point(1132, 459);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(75, 23);
@@ -177,7 +180,7 @@
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -185,7 +188,7 @@
             // 
             this.quitToolStripMenuItem1.Name = "quitToolStripMenuItem1";
             this.quitToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(149, 22);
             this.quitToolStripMenuItem1.Text = "&Quit";
             this.quitToolStripMenuItem1.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -229,27 +232,27 @@
             this.pxToolStripMenuItem1,
             this.pxToolStripMenuItem2});
             this.imageListWidthToolStripMenuItem.Name = "imageListWidthToolStripMenuItem";
-            this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.imageListWidthToolStripMenuItem.Text = "&Image List Width";
             // 
             // pxToolStripMenuItem
             // 
             this.pxToolStripMenuItem.Name = "pxToolStripMenuItem";
-            this.pxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
             this.pxToolStripMenuItem.Text = "&64px";
             this.pxToolStripMenuItem.Click += new System.EventHandler(this.pxToolStripMenuItem_Click);
             // 
             // pxToolStripMenuItem1
             // 
             this.pxToolStripMenuItem1.Name = "pxToolStripMenuItem1";
-            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(105, 22);
             this.pxToolStripMenuItem1.Text = "&128px";
             this.pxToolStripMenuItem1.Click += new System.EventHandler(this.pxToolStripMenuItem1_Click);
             // 
             // pxToolStripMenuItem2
             // 
             this.pxToolStripMenuItem2.Name = "pxToolStripMenuItem2";
-            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(105, 22);
             this.pxToolStripMenuItem2.Text = "&256px";
             this.pxToolStripMenuItem2.Click += new System.EventHandler(this.pxToolStripMenuItem2_Click);
             // 
