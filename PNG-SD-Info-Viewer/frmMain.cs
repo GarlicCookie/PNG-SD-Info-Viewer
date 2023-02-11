@@ -1,5 +1,6 @@
 using MetadataExtractor;
 using MetadataExtractor.Formats.FileSystem;
+using System.ComponentModel;
 using System.Data.Common;
 using System.Drawing.Imaging;
 using System.IO;
@@ -243,14 +244,6 @@ namespace PNG_SD_Info_Viewer
                 }
         }
 
-        
-        // Simple method to copy parameters to clipboard
-        private void btnCopy_Click(object sender, EventArgs e)
-        {
-            // Copies to clipboard
-            Clipboard.SetText(txtParameters.Text);
-        }
-
 
         // Method to show listbox and populate it with the selected folder if there is one
         private void fileListToolStripMenuItem_Click(object sender, EventArgs e)
@@ -340,5 +333,68 @@ namespace PNG_SD_Info_Viewer
             }
         }
 
+
+        // Simple method to copy parameters to clipboard
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            // Copies to clipboard
+            Clipboard.SetText(txtParameters.Text);
+        }
+
+        // Copy prompt button
+        private void btnCopyPrompt_Click(object sender, EventArgs e)
+        {
+            // Grab the full prompt text, leave if it is empty
+            string s = txtParameters.Text;
+            if (s == "") { return; }
+
+            // Split the text at line breaks
+            string[] components = s.Split("\r\n");
+            
+            // Loop through each split spot and pull out what we need
+            foreach (string component in components)
+            {
+                // If the string is at least 12 long, and starts this way, we found our prompt
+                if ((component.Length >=12) && (component.Substring(0, 12) == "parameters: "))
+                {
+                    // Copies to clipboard
+                    Clipboard.SetText(component);
+                }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Grab the full prompt text, leave if it is empty
+            string s = txtParameters.Text;
+            if (s == "") { return; }
+
+            // Set up a string to hold both parts, positive and negative
+            string stringToCopy = "";
+
+            // Split the text at line breaks
+            string[] components = s.Split("\r\n");
+
+            // Loop through each split spot and pull out what we need
+            foreach (string component in components)
+            {
+                // If the string is at least 12 long, and starts this way, we found our prompt
+                if ((component.Length >= 12) && (component.Substring(0, 12) == "parameters: "))
+                {
+                    // Add to our copy string
+                    stringToCopy += component;
+                }
+                // If the string is at least 17 long, and starts this way, we found our negative prompt
+                if ((component.Length >= 17) && (component.Substring(0, 17) == "Negative Prompt: "))
+                {
+                    // Add to our copy string
+                    stringToCopy += component;
+                }
+            }
+
+            // Copies to clipboard
+            Clipboard.SetText(stringToCopy);
+        }
     }
+
 }

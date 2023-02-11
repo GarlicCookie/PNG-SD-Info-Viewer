@@ -52,6 +52,8 @@
             this.pxToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvMain = new System.Windows.Forms.DataGridView();
             this.lblFilename = new System.Windows.Forms.Label();
+            this.btnCopyPrompt = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
@@ -145,11 +147,11 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(1132, 459);
+            this.btnCopy.Location = new System.Drawing.Point(1085, 458);
             this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(75, 23);
+            this.btnCopy.Size = new System.Drawing.Size(122, 23);
             this.btnCopy.TabIndex = 8;
-            this.btnCopy.Text = "Copy";
+            this.btnCopy.Text = "Copy All";
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
@@ -288,11 +290,33 @@
             this.lblFilename.TabIndex = 12;
             this.lblFilename.Text = "lblFilename";
             // 
+            // btnCopyPrompt
+            // 
+            this.btnCopyPrompt.Location = new System.Drawing.Point(829, 458);
+            this.btnCopyPrompt.Name = "btnCopyPrompt";
+            this.btnCopyPrompt.Size = new System.Drawing.Size(122, 23);
+            this.btnCopyPrompt.TabIndex = 13;
+            this.btnCopyPrompt.Text = "Copy Prompt";
+            this.btnCopyPrompt.UseVisualStyleBackColor = true;
+            this.btnCopyPrompt.Click += new System.EventHandler(this.btnCopyPrompt_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(957, 458);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(122, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "Copy Prompt + Neg";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1225, 687);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCopyPrompt);
             this.Controls.Add(this.lblFilename);
             this.Controls.Add(this.dgvMain);
             this.Controls.Add(this.btnCopy);
@@ -343,5 +367,7 @@
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem quitToolStripMenuItem1;
+        private Button btnCopyPrompt;
+        private Button button1;
     }
 }
