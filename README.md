@@ -9,13 +9,11 @@ So I whipped this up and decided to post it here. :)  Uses the GNU GPL3 license 
 
 Uses, and thanks to, the <a href="https://github.com/drewnoakes/metadata-extractor">metadata-extractor library</a> developed by Drew Noakes under <a href="http://www.apache.org/licenses/LICENSE-2.0">the Apache License 2</a>
 
-![Screenshot](web/screenshot1.jpg?raw=true "Screenshot")
+![Screenshot](web2/screenshot1.jpg?raw=true "Screenshot")
 
 
 
 Thank you for your support!  Enjoy the program! :)
 
 
-![Icon](web/00137-2000916955.png?raw=true "Icon")
-
-.
+![Icon](web2/00137-2000916955.png?raw=true "Icon")
