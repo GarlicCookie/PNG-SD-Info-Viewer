@@ -54,6 +54,7 @@
             this.lblFilename = new System.Windows.Forms.Label();
             this.btnCopyPrompt = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.pxToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
@@ -230,31 +231,32 @@
             // imageListWidthToolStripMenuItem
             // 
             this.imageListWidthToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pxToolStripMenuItem3,
             this.pxToolStripMenuItem,
             this.pxToolStripMenuItem1,
             this.pxToolStripMenuItem2});
             this.imageListWidthToolStripMenuItem.Name = "imageListWidthToolStripMenuItem";
-            this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.imageListWidthToolStripMenuItem.Text = "&Image List Width";
             // 
             // pxToolStripMenuItem
             // 
             this.pxToolStripMenuItem.Name = "pxToolStripMenuItem";
-            this.pxToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.pxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pxToolStripMenuItem.Text = "&64px";
             this.pxToolStripMenuItem.Click += new System.EventHandler(this.pxToolStripMenuItem_Click);
             // 
             // pxToolStripMenuItem1
             // 
             this.pxToolStripMenuItem1.Name = "pxToolStripMenuItem1";
-            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(105, 22);
+            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.pxToolStripMenuItem1.Text = "&128px";
             this.pxToolStripMenuItem1.Click += new System.EventHandler(this.pxToolStripMenuItem1_Click);
             // 
             // pxToolStripMenuItem2
             // 
             this.pxToolStripMenuItem2.Name = "pxToolStripMenuItem2";
-            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(105, 22);
+            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.pxToolStripMenuItem2.Text = "&256px";
             this.pxToolStripMenuItem2.Click += new System.EventHandler(this.pxToolStripMenuItem2_Click);
             // 
@@ -292,6 +294,7 @@
             // 
             // btnCopyPrompt
             // 
+            this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCopyPrompt.Location = new System.Drawing.Point(829, 458);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
             this.btnCopyPrompt.Size = new System.Drawing.Size(122, 23);
@@ -302,6 +305,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(957, 458);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(122, 23);
@@ -309,6 +313,13 @@
             this.button1.Text = "Copy Prompt + Neg";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // pxToolStripMenuItem3
+            // 
+            this.pxToolStripMenuItem3.Name = "pxToolStripMenuItem3";
+            this.pxToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem3.Text = "32px";
+            this.pxToolStripMenuItem3.Click += new System.EventHandler(this.pxToolStripMenuItem3_Click);
             // 
             // frmMain
             // 
@@ -330,9 +341,11 @@
             this.Controls.Add(this.picbImageDisplay);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.Text = "PNG-SD-Info-Viewer, for Stable Diffusion Generated Images";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -369,5 +382,6 @@
         private ToolStripMenuItem quitToolStripMenuItem1;
         private Button btnCopyPrompt;
         private Button button1;
+        private ToolStripMenuItem pxToolStripMenuItem3;
     }
 }

@@ -20,8 +20,8 @@ namespace PNG_SD_Info_Viewer
         string openPath = "";
         
         // Default size of the image previews in image list mode
-        int wSize = 128;
-        int hSize = 128;
+        int wSize = 64;
+        int hSize = 64;
 
 
         // Launchpoint
@@ -74,6 +74,7 @@ namespace PNG_SD_Info_Viewer
 
             // Set the side of the images in the imagelist
             imgList.ImageSize = new Size(wSize, hSize);
+            
 
             // Setup datagridview columns if DGV is active
             if (dgvMain.Visible == true)
@@ -103,7 +104,53 @@ namespace PNG_SD_Info_Viewer
                 // Add filename to imgList object, with the full path as a key.  Might use the keyname later to lookup an image.  Only do this if we are using a DGV to save CPU and memory!
                 if (dgvMain.Visible == true)
                 {
-                    imgList.Images.Add(file.FullName, Image.FromFile(file.FullName));
+                    // Add image to ImageList using memory optimization method.  Converts to resized bitmap then adds.
+                    // inprogress: check fullname length!                
+
+                    // Set a bool for checking if we have a path that's too long
+                    bool badImage = false;
+
+                    // Setup our string to display is it's too long
+                    string errorNotifier = "Certain images were not loaded because their filepath and filename are too long for your OS:\r\n";
+                    
+                    // Check if the full path is over 256 characters
+                    if (file.FullName.Length > 256)
+                    {
+                        // Add the filepath and filename to the error message
+                        errorNotifier += file.FullName + "\r\n";
+                        
+                        // Set that this iteration through the foreach is no good
+                        badImage = true;
+                    }
+
+                    // If we didn't set our image pathlength as bad, continue.
+                    if (badImage == false)
+                    {
+                        // Convert our image to a smaller bitmap, then add it to the ImageList
+                        using (var tempImage = Image.FromFile(file.FullName))
+                        {
+                            Bitmap bmp = new Bitmap(wSize, hSize);
+                            using (Graphics g = Graphics.FromImage(bmp))
+                            {
+                                g.DrawImage(tempImage, new Rectangle(0, 0, bmp.Width, bmp.Height));
+                            }
+
+                            // Add the resized bitmap to our imagelist
+                            imgList.Images.Add(bmp);
+                        }
+                    }
+                    // If we do not have a good image because the filepath is too long, show error
+                    else
+                    {
+                        MessageBox.Show(errorNotifier);
+                    }
+                    
+                    // Reset the bad image indicator for the next iteration
+                    badImage = false;
+
+                    // Commented out the original add line to use the above more memory-efficient method.  Keeping here in case we need to revert.
+                    //imgList.Images.Add(file.FullName, Image.FromFile(file.FullName));
+                    
                 }
             }
 
@@ -298,6 +345,18 @@ namespace PNG_SD_Info_Viewer
         }
 
 
+        // Set to 32px and go repopulate the list
+        private void pxToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            hSize = 32;
+            wSize = 32;
+            if (openPath != "")
+            {
+                findImagesInDirectory(openPath);
+            }
+        }
+
+
         // Set to 64px and go repopulate the list
         private void pxToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -395,6 +454,46 @@ namespace PNG_SD_Info_Viewer
             // Copies to clipboard
             Clipboard.SetText(stringToCopy);
         }
+
+
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Oemtilde)
+            {
+                // Set a string for the selected image filename
+                string selectedImage = "";
+
+                // Get the filename selected in the listbox
+                selectedImage = lstbFilelist.GetItemText(lstbFilelist.SelectedItem);
+
+                if (selectedImage == "")
+                {
+                    // Pull out any selected rows. There should only be one since we limit it to single row selection.  TODO: Replace the foreach, we don't need to iterate.
+                    foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
+                    {
+                        // If the value in the second column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
+                        if (dgvMain[1, selectedRow.Index].Value.ToString() != null)
+                        {
+                            selectedImage = dgvMain[1, selectedRow.Index].Value.ToString()!;
+                        }
+                    }
+                }
+
+                // Commenting out so I can publish other fixes.  This is my next TODO.
+                /*if (selectedImage == "")
+                {
+                    txtParameters.Text += "nothing, returning...";
+                    return;
+                }
+
+                txtParameters.Text = selectedImage; */
+
+            }
+
+            
+        }
+
+
     }
 
 }
