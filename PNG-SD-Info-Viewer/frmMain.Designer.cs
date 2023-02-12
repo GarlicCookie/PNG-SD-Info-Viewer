@@ -47,14 +47,18 @@
             this.imageListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListWidthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pxToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.pxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pxToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pxToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tagImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyTaggedImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvMain = new System.Windows.Forms.DataGridView();
             this.lblFilename = new System.Windows.Forms.Label();
             this.btnCopyPrompt = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.pxToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.chkTag = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
@@ -162,7 +166,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.menuToolStripMenuItem,
-            this.sizeToolStripMenuItem});
+            this.sizeToolStripMenuItem,
+            this.tagToolStripMenuItem});
             this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -239,26 +244,56 @@
             this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.imageListWidthToolStripMenuItem.Text = "&Image List Width";
             // 
+            // pxToolStripMenuItem3
+            // 
+            this.pxToolStripMenuItem3.Name = "pxToolStripMenuItem3";
+            this.pxToolStripMenuItem3.Size = new System.Drawing.Size(105, 22);
+            this.pxToolStripMenuItem3.Text = "&32px";
+            this.pxToolStripMenuItem3.Click += new System.EventHandler(this.pxToolStripMenuItem3_Click);
+            // 
             // pxToolStripMenuItem
             // 
             this.pxToolStripMenuItem.Name = "pxToolStripMenuItem";
-            this.pxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
             this.pxToolStripMenuItem.Text = "&64px";
             this.pxToolStripMenuItem.Click += new System.EventHandler(this.pxToolStripMenuItem_Click);
             // 
             // pxToolStripMenuItem1
             // 
             this.pxToolStripMenuItem1.Name = "pxToolStripMenuItem1";
-            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem1.Size = new System.Drawing.Size(105, 22);
             this.pxToolStripMenuItem1.Text = "&128px";
             this.pxToolStripMenuItem1.Click += new System.EventHandler(this.pxToolStripMenuItem1_Click);
             // 
             // pxToolStripMenuItem2
             // 
             this.pxToolStripMenuItem2.Name = "pxToolStripMenuItem2";
-            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.pxToolStripMenuItem2.Size = new System.Drawing.Size(105, 22);
             this.pxToolStripMenuItem2.Text = "&256px";
             this.pxToolStripMenuItem2.Click += new System.EventHandler(this.pxToolStripMenuItem2_Click);
+            // 
+            // tagToolStripMenuItem
+            // 
+            this.tagToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tagImageToolStripMenuItem,
+            this.copyTaggedImagesToolStripMenuItem});
+            this.tagToolStripMenuItem.Name = "tagToolStripMenuItem";
+            this.tagToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.tagToolStripMenuItem.Text = "&Tag";
+            // 
+            // tagImageToolStripMenuItem
+            // 
+            this.tagImageToolStripMenuItem.Name = "tagImageToolStripMenuItem";
+            this.tagImageToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.tagImageToolStripMenuItem.Text = "&Tag / Untag Image (Hotkey: ~)";
+            // 
+            // copyTaggedImagesToolStripMenuItem
+            // 
+            this.copyTaggedImagesToolStripMenuItem.Name = "copyTaggedImagesToolStripMenuItem";
+            this.copyTaggedImagesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.copyTaggedImagesToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.copyTaggedImagesToolStripMenuItem.Text = "&Copy Tagged Images";
+            this.copyTaggedImagesToolStripMenuItem.Click += new System.EventHandler(this.copyTaggedImagesToolStripMenuItem_Click);
             // 
             // dgvMain
             // 
@@ -314,18 +349,25 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // pxToolStripMenuItem3
+            // chkTag
             // 
-            this.pxToolStripMenuItem3.Name = "pxToolStripMenuItem3";
-            this.pxToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
-            this.pxToolStripMenuItem3.Text = "32px";
-            this.pxToolStripMenuItem3.Click += new System.EventHandler(this.pxToolStripMenuItem3_Click);
+            this.chkTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkTag.AutoSize = true;
+            this.chkTag.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkTag.Location = new System.Drawing.Point(1140, 48);
+            this.chkTag.Name = "chkTag";
+            this.chkTag.Size = new System.Drawing.Size(67, 19);
+            this.chkTag.TabIndex = 15;
+            this.chkTag.Text = "Tagged:";
+            this.chkTag.UseVisualStyleBackColor = true;
+            this.chkTag.Click += new System.EventHandler(this.chkTag_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1225, 687);
+            this.Controls.Add(this.chkTag);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCopyPrompt);
             this.Controls.Add(this.lblFilename);
@@ -383,5 +425,9 @@
         private Button btnCopyPrompt;
         private Button button1;
         private ToolStripMenuItem pxToolStripMenuItem3;
+        private CheckBox chkTag;
+        private ToolStripMenuItem tagToolStripMenuItem;
+        private ToolStripMenuItem tagImageToolStripMenuItem;
+        private ToolStripMenuItem copyTaggedImagesToolStripMenuItem;
     }
 }

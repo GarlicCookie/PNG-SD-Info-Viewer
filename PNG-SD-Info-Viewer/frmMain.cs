@@ -23,6 +23,8 @@ namespace PNG_SD_Info_Viewer
         int wSize = 64;
         int hSize = 64;
 
+        // List to hold tagged image paths
+        List<string> taggedImages = new List<string>();
 
         // Launchpoint
         public frmMain()
@@ -64,6 +66,7 @@ namespace PNG_SD_Info_Viewer
         private void findImagesInDirectory(string path)
         {
             // Reset lists and parameters box
+            taggedImages.Clear();
             lstbFilelist.Items.Clear();
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
@@ -227,7 +230,7 @@ namespace PNG_SD_Info_Viewer
         }
 
 
-        // Call this when a new row is selected in our DataGridView
+        // Call this when a new row is selected in our DataGridView - TODO:  Delete this*************
         private void dgvMain_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Clear the stuffs
@@ -263,6 +266,9 @@ namespace PNG_SD_Info_Viewer
 
             // Show the selected filename on the UI
             lblFilename.Text = selectedImage;
+
+            // Show the tag checkbox accordingly
+            updateTagBox(selectedImage);
 
             // Grab the EXIF data and show it in the parameters textbox
             IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(openPath + "\\" + selectedImage);
@@ -460,40 +466,136 @@ namespace PNG_SD_Info_Viewer
         {
             if (e.KeyCode == Keys.Oemtilde)
             {
-                // Set a string for the selected image filename
-                string selectedImage = "";
-
-                // Get the filename selected in the listbox
-                selectedImage = lstbFilelist.GetItemText(lstbFilelist.SelectedItem);
-
-                if (selectedImage == "")
-                {
-                    // Pull out any selected rows. There should only be one since we limit it to single row selection.  TODO: Replace the foreach, we don't need to iterate.
-                    foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
-                    {
-                        // If the value in the second column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
-                        if (dgvMain[1, selectedRow.Index].Value.ToString() != null)
-                        {
-                            selectedImage = dgvMain[1, selectedRow.Index].Value.ToString()!;
-                        }
-                    }
-                }
-
-                // Commenting out so I can publish other fixes.  This is my next TODO.
-                /*if (selectedImage == "")
-                {
-                    txtParameters.Text += "nothing, returning...";
-                    return;
-                }
-
-                txtParameters.Text = selectedImage; */
-
+                // Call the tag check if we press ~
+                tagger();
             }
-
-            
         }
 
 
+        private void tagger()
+        {
+            // Set a string for the selected image filename
+            string selectedImage = "";
+
+            // Get the filename selected in the listbox
+            selectedImage = lstbFilelist.GetItemText(lstbFilelist.SelectedItem);
+
+            // Still no image, so we must be in DGV mode
+            if (selectedImage == "")
+            {
+                // Pull out any selected rows. There should only be one since we limit it to single row selection.  TODO: Replace the foreach, we don't need to iterate.
+                foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
+                {
+                    // If the value in the second column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
+                    if (dgvMain[1, selectedRow.Index].Value.ToString() != null)
+                    {
+                        selectedImage = dgvMain[1, selectedRow.Index].Value.ToString()!;
+                    }
+                }
+            }
+
+            // Check if image is selected, leave if not.
+            if (selectedImage == "")
+            {
+                return;
+            }
+
+            // var used to keep track if we already know it is tagged
+            bool found = false;
+
+            // Still here, so get the file path and file name
+            foreach (string s in taggedImages)
+            {
+                if (s == selectedImage)
+                {
+                    // We found it, so we need to untag it below.
+                    found = true;
+                    // Quit looking, we already found it.
+                    break;
+                }
+            }
+
+            // Not found, so tag it.
+            if (found == false)
+            {
+                taggedImages.Add(selectedImage);
+            }
+
+            // Found, so untag it
+            if (found == true)
+            {
+                taggedImages.Remove(selectedImage);
+            }
+
+            updateTagBox(selectedImage);
+        }
+
+        private void updateTagBox(string selectedImage)
+        {
+            bool found = false;
+            
+            // Show tag if the image is in our tag list
+            foreach (string s in taggedImages)
+            {
+                if (s == selectedImage)
+                {
+                    // We found it, so we need to untag it below.
+                    found = true;
+                    // Quit looking, we already found it.
+                    break;
+                }
+            }
+
+            // Not found, so not checked
+            if (found == false)
+            {
+                chkTag.Checked = false;
+            }
+
+            // Found, so checked
+            if (found == true)
+            {
+               chkTag.Checked = true;
+            }
+
+        }
+
+
+
+        private void chkTag_Click(object sender, EventArgs e)
+        {
+            tagger();
+        }
+
+        private void copyTaggedImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Grab the folder from a dialog box
+            var fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                // Display
+                txtParameters.Text = "Copying your tagged files to specified location.  This will NOT overwrite existing files.\r\n\r\n";
+
+                // Store the path selected
+                string saveToPath = fbd.SelectedPath;
+
+                // Save tagged images
+                foreach (string s in taggedImages)
+                {
+                    
+                    if (File.Exists(saveToPath + "\\" + s) == false)
+                    {
+                        txtParameters.Text += "Copying: " + s + " to: " + saveToPath + "\r\n";
+                        File.Copy(openPath + "\\" + s, saveToPath + "\\" + s);
+                    }
+                    else
+                    {
+                        txtParameters.Text += "Skipping, file already exists: " + s + " to: " + saveToPath + "\r\n";
+                    }
+                }
+            }
+        }
     }
 
 }
