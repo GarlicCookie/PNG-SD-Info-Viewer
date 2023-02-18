@@ -286,6 +286,7 @@ namespace PNG_SD_Info_Viewer
                         parsed = parsed.Replace("Steps:", "\r\n\r\nSteps:");
                         parsed = parsed.Replace("Sampler:", "\r\nSampler:");
                         parsed = parsed.Replace("CFG scale:", "\r\nCFG scale:");
+                        parsed = parsed.Replace("Seed:", "\r\nSeed:");
                         parsed = parsed.Replace("Size:", "\r\nSize:");
                         parsed = parsed.Replace("Model hash:", "\r\nModel hash:");
                         parsed = parsed.Replace("Model:", "\r\nModel:");
