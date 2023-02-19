@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.picbImageDisplay = new System.Windows.Forms.PictureBox();
             this.btnSelectFolder = new System.Windows.Forms.Button();
-            this.lstbFilelist = new System.Windows.Forms.ListBox();
             this.txtParameters = new System.Windows.Forms.TextBox();
             this.lblFilesInFolder = new System.Windows.Forms.Label();
             this.lblImage = new System.Windows.Forms.Label();
@@ -54,24 +53,30 @@
             this.tagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyTaggedImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dgvMain = new System.Windows.Forms.DataGridView();
             this.lblFilename = new System.Windows.Forms.Label();
             this.btnCopyPrompt = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.chkTag = new System.Windows.Forms.CheckBox();
             this.panMain = new System.Windows.Forms.Panel();
+            this.lstbFilelist = new System.Windows.Forms.ListBox();
+            this.dgvMain = new System.Windows.Forms.DataGridView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.panMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // picbImageDisplay
             // 
             this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picbImageDisplay.Location = new System.Drawing.Point(0, 0);
+            this.picbImageDisplay.Location = new System.Drawing.Point(313, 84);
             this.picbImageDisplay.Name = "picbImageDisplay";
-            this.picbImageDisplay.Size = new System.Drawing.Size(844, 381);
+            this.picbImageDisplay.Size = new System.Drawing.Size(261, 180);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbImageDisplay.TabIndex = 0;
             this.picbImageDisplay.TabStop = false;
@@ -90,34 +95,21 @@
             this.btnSelectFolder.UseVisualStyleBackColor = true;
             this.btnSelectFolder.Click += new System.EventHandler(this.btnSelectFolder_Click);
             // 
-            // lstbFilelist
-            // 
-            this.lstbFilelist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lstbFilelist.FormattingEnabled = true;
-            this.lstbFilelist.HorizontalScrollbar = true;
-            this.lstbFilelist.ItemHeight = 15;
-            this.lstbFilelist.Location = new System.Drawing.Point(12, 70);
-            this.lstbFilelist.Name = "lstbFilelist";
-            this.lstbFilelist.Size = new System.Drawing.Size(343, 604);
-            this.lstbFilelist.TabIndex = 2;
-            this.lstbFilelist.SelectedIndexChanged += new System.EventHandler(this.lstbFilelist_SelectedIndexChanged);
-            // 
             // txtParameters
             // 
             this.txtParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtParameters.Location = new System.Drawing.Point(361, 484);
+            this.txtParameters.Location = new System.Drawing.Point(3, 443);
             this.txtParameters.Multiline = true;
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtParameters.Size = new System.Drawing.Size(846, 191);
+            this.txtParameters.Size = new System.Drawing.Size(903, 172);
             this.txtParameters.TabIndex = 3;
             // 
             // lblFilesInFolder
             // 
             this.lblFilesInFolder.AutoSize = true;
-            this.lblFilesInFolder.Location = new System.Drawing.Point(12, 52);
+            this.lblFilesInFolder.Location = new System.Drawing.Point(3, 0);
             this.lblFilesInFolder.Name = "lblFilesInFolder";
             this.lblFilesInFolder.Size = new System.Drawing.Size(82, 15);
             this.lblFilesInFolder.TabIndex = 4;
@@ -126,7 +118,7 @@
             // lblImage
             // 
             this.lblImage.AutoSize = true;
-            this.lblImage.Location = new System.Drawing.Point(361, 52);
+            this.lblImage.Location = new System.Drawing.Point(3, 0);
             this.lblImage.Name = "lblImage";
             this.lblImage.Size = new System.Drawing.Size(43, 15);
             this.lblImage.TabIndex = 5;
@@ -137,7 +129,7 @@
             this.lblParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblParameters.AutoSize = true;
-            this.lblParameters.Location = new System.Drawing.Point(361, 466);
+            this.lblParameters.Location = new System.Drawing.Point(3, 425);
             this.lblParameters.Name = "lblParameters";
             this.lblParameters.Size = new System.Drawing.Size(69, 15);
             this.lblParameters.TabIndex = 6;
@@ -155,7 +147,7 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(1085, 458);
+            this.btnCopy.Location = new System.Drawing.Point(784, 414);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(122, 23);
             this.btnCopy.TabIndex = 8;
@@ -298,33 +290,10 @@
             this.copyTaggedImagesToolStripMenuItem.Text = "&Copy Tagged Images";
             this.copyTaggedImagesToolStripMenuItem.Click += new System.EventHandler(this.copyTaggedImagesToolStripMenuItem_Click);
             // 
-            // dgvMain
-            // 
-            this.dgvMain.AllowUserToAddRows = false;
-            this.dgvMain.AllowUserToDeleteRows = false;
-            this.dgvMain.AllowUserToResizeRows = false;
-            this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvMain.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMain.Location = new System.Drawing.Point(12, 70);
-            this.dgvMain.MultiSelect = false;
-            this.dgvMain.Name = "dgvMain";
-            this.dgvMain.ReadOnly = true;
-            this.dgvMain.RowHeadersVisible = false;
-            this.dgvMain.RowTemplate.Height = 50;
-            this.dgvMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.Size = new System.Drawing.Size(343, 604);
-            this.dgvMain.TabIndex = 11;
-            this.dgvMain.Visible = false;
-            this.dgvMain.SelectionChanged += new System.EventHandler(this.dgvMain_SelectionChanged);
-            // 
             // lblFilename
             // 
             this.lblFilename.AutoSize = true;
-            this.lblFilename.Location = new System.Drawing.Point(410, 52);
+            this.lblFilename.Location = new System.Drawing.Point(52, 0);
             this.lblFilename.Name = "lblFilename";
             this.lblFilename.Size = new System.Drawing.Size(68, 15);
             this.lblFilename.TabIndex = 12;
@@ -333,7 +302,7 @@
             // btnCopyPrompt
             // 
             this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyPrompt.Location = new System.Drawing.Point(829, 458);
+            this.btnCopyPrompt.Location = new System.Drawing.Point(528, 414);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
             this.btnCopyPrompt.Size = new System.Drawing.Size(122, 23);
             this.btnCopyPrompt.TabIndex = 13;
@@ -344,7 +313,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(957, 458);
+            this.button1.Location = new System.Drawing.Point(656, 414);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(122, 23);
             this.button1.TabIndex = 14;
@@ -357,7 +326,7 @@
             this.chkTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkTag.AutoSize = true;
             this.chkTag.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkTag.Location = new System.Drawing.Point(1140, 48);
+            this.chkTag.Location = new System.Drawing.Point(1142, 30);
             this.chkTag.Name = "chkTag";
             this.chkTag.Size = new System.Drawing.Size(67, 19);
             this.chkTag.TabIndex = 15;
@@ -372,32 +341,93 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panMain.Controls.Add(this.picbImageDisplay);
-            this.panMain.Location = new System.Drawing.Point(361, 70);
+            this.panMain.Location = new System.Drawing.Point(3, 18);
             this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(846, 383);
+            this.panMain.Size = new System.Drawing.Size(903, 390);
             this.panMain.TabIndex = 16;
             this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
+            // 
+            // lstbFilelist
+            // 
+            this.lstbFilelist.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstbFilelist.FormattingEnabled = true;
+            this.lstbFilelist.HorizontalScrollbar = true;
+            this.lstbFilelist.ItemHeight = 15;
+            this.lstbFilelist.Location = new System.Drawing.Point(3, 18);
+            this.lstbFilelist.Name = "lstbFilelist";
+            this.lstbFilelist.Size = new System.Drawing.Size(275, 589);
+            this.lstbFilelist.TabIndex = 2;
+            this.lstbFilelist.SelectedIndexChanged += new System.EventHandler(this.lstbFilelist_SelectedIndexChanged);
+            // 
+            // dgvMain
+            // 
+            this.dgvMain.AllowUserToAddRows = false;
+            this.dgvMain.AllowUserToDeleteRows = false;
+            this.dgvMain.AllowUserToResizeRows = false;
+            this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvMain.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMain.Location = new System.Drawing.Point(3, 18);
+            this.dgvMain.MultiSelect = false;
+            this.dgvMain.Name = "dgvMain";
+            this.dgvMain.ReadOnly = true;
+            this.dgvMain.RowHeadersVisible = false;
+            this.dgvMain.RowTemplate.Height = 50;
+            this.dgvMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMain.Size = new System.Drawing.Size(275, 597);
+            this.dgvMain.TabIndex = 11;
+            this.dgvMain.Visible = false;
+            this.dgvMain.SelectionChanged += new System.EventHandler(this.dgvMain_SelectionChanged);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(12, 55);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.Panel1.Controls.Add(this.dgvMain);
+            this.splitContainer1.Panel1.Controls.Add(this.lstbFilelist);
+            this.splitContainer1.Panel1.Controls.Add(this.lblFilesInFolder);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.Panel2.Controls.Add(this.lblFilename);
+            this.splitContainer1.Panel2.Controls.Add(this.button1);
+            this.splitContainer1.Panel2.Controls.Add(this.btnCopy);
+            this.splitContainer1.Panel2.Controls.Add(this.btnCopyPrompt);
+            this.splitContainer1.Panel2.Controls.Add(this.lblImage);
+            this.splitContainer1.Panel2.Controls.Add(this.lblParameters);
+            this.splitContainer1.Panel2.Controls.Add(this.panMain);
+            this.splitContainer1.Panel2.Controls.Add(this.txtParameters);
+            this.splitContainer1.Size = new System.Drawing.Size(1201, 620);
+            this.splitContainer1.SplitterDistance = 281;
+            this.splitContainer1.SplitterWidth = 6;
+            this.splitContainer1.TabIndex = 17;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1225, 687);
-            this.Controls.Add(this.panMain);
-            this.Controls.Add(this.chkTag);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnCopyPrompt);
-            this.Controls.Add(this.lblFilename);
-            this.Controls.Add(this.dgvMain);
-            this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.lblFolderSelected);
-            this.Controls.Add(this.lblParameters);
-            this.Controls.Add(this.lblImage);
-            this.Controls.Add(this.lblFilesInFolder);
-            this.Controls.Add(this.txtParameters);
-            this.Controls.Add(this.lstbFilelist);
+            this.Controls.Add(this.chkTag);
             this.Controls.Add(this.btnSelectFolder);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
@@ -407,8 +437,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
             this.panMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -418,7 +454,6 @@
 
         private PictureBox picbImageDisplay;
         private Button btnSelectFolder;
-        private ListBox lstbFilelist;
         private TextBox txtParameters;
         private Label lblFilesInFolder;
         private Label lblImage;
@@ -429,7 +464,6 @@
         private ToolStripMenuItem menuToolStripMenuItem;
         private ToolStripMenuItem fileListToolStripMenuItem;
         private ToolStripMenuItem imageListToolStripMenuItem;
-        private DataGridView dgvMain;
         private ToolStripMenuItem sizeToolStripMenuItem;
         private ToolStripMenuItem imageListWidthToolStripMenuItem;
         private ToolStripMenuItem pxToolStripMenuItem;
@@ -447,5 +481,8 @@
         private ToolStripMenuItem tagImageToolStripMenuItem;
         private ToolStripMenuItem copyTaggedImagesToolStripMenuItem;
         private Panel panMain;
+        private ListBox lstbFilelist;
+        private DataGridView dgvMain;
+        private SplitContainer splitContainer1;
     }
 }

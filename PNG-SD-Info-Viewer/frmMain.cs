@@ -718,6 +718,9 @@ namespace PNG_SD_Info_Viewer
             // Left click the image, so zoom in.
             if (e.Button == MouseButtons.Left)
             {
+                // Ensure a picture is even loaded
+                if (picbImageDisplay.Image == null) { return; }
+                
                 // If already in 'zoom' view mode (which is actually the fullsize view)
                 if (picbImageDisplay.SizeMode == PictureBoxSizeMode.Zoom)
                 {
