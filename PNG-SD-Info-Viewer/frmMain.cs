@@ -1,5 +1,6 @@
 using MetadataExtractor;
 using MetadataExtractor.Formats.FileSystem;
+using System.Collections;
 using System.ComponentModel;
 using System.Data.Common;
 using System.Drawing.Imaging;
@@ -9,12 +10,16 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
+
 namespace PNG_SD_Info_Viewer
 {
     public partial class frmMain : Form
     {
-        // ImageList object, used to fill in a DataGridView for image list mode
-        ImageList imgList = new ImageList();
+        // ImageList object, used to fill in a DataGridView for image list mode (no longer used)
+        //ImageList imgList = new ImageList();
+
+        // Array of images
+        ArrayList arList = new ArrayList();
         
         // A string to hold the open path
         string openPath = "";
@@ -26,6 +31,15 @@ namespace PNG_SD_Info_Viewer
         // List to hold tagged image paths
         List<string> taggedImages = new List<string>();
 
+        // Bool to check if mouse is pressed and moving
+        bool isMouseDragging;
+        
+        // Mouse x pos when draggins
+        int xPos;
+        
+        // Mouse y pos when dragging
+        int yPos;
+
         // Launchpoint
         public frmMain()
         {
@@ -34,6 +48,81 @@ namespace PNG_SD_Info_Viewer
             // Empty some of the textboxes.
             lblFolderSelected.Text = "";
             lblFilename.Text = "";
+
+            // Fire up the mousewheel detection on the picturebox
+            picbImageDisplay.MouseWheel += PicbImageDisplay_MouseWheel;
+        }
+
+        // Mousewheel detection
+        private void PicbImageDisplay_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            
+            if (e.Delta < 0)
+            {
+                // Go to next file
+                // Make sure list view is on and has items
+                if (lstbFilelist.Items.Count > 0 && lstbFilelist.Visible == true)
+                {
+                    // If so, make sure that we aren't already at the end
+                    if (lstbFilelist.SelectedIndex != lstbFilelist.Items.Count - 1)
+                    {
+                        // Advance
+                        lstbFilelist.SelectedIndex = lstbFilelist.SelectedIndex + 1;
+                    }
+                }
+                // Make sure DGV view is on and has items
+                else if (dgvMain.RowCount > 0 && dgvMain.Visible == true)
+                {
+                    // Get the row index and length
+                    if (dgvMain.SelectedRows.Count == 0) { return; }
+                    DataGridViewRow r = dgvMain.SelectedRows[0];
+                    int dgvCurrentRowIndex = r.Index;
+                    int dgvLength = dgvMain.RowCount;
+                    
+                    // Make sure we aren't at the end already
+                    if (dgvCurrentRowIndex != dgvLength-1) 
+                    {
+                        // Advance
+                        dgvMain[1, dgvCurrentRowIndex + 1].Selected = true;
+                    }
+                    
+                    // Cleanup
+                    r.Dispose();
+                }
+            }
+            else
+            {
+                // Go to previous file
+                // Ensure the list is visible and has items
+                if (lstbFilelist.Items.Count > 0 && lstbFilelist.Visible == true)
+                {
+                    // Ensure we are not at the beginning, or nothing selected
+                    if (lstbFilelist.SelectedIndex != 0 && lstbFilelist.SelectedIndex != -1)
+                    {
+                        // Go back one
+                        lstbFilelist.SelectedIndex = lstbFilelist.SelectedIndex - 1;
+                    }
+                }
+                // Enure DGV has items and is on
+                else if (dgvMain.RowCount > 0 && dgvMain.Visible == true)
+                {
+                    // Get row index and length
+                    if (dgvMain.SelectedRows.Count == 0) { return; }
+                    DataGridViewRow r = dgvMain.SelectedRows[0];
+                    int dgvCurrentRowIndex = r.Index;
+                    int dgvLength = dgvMain.RowCount;
+                    
+                    // Verify not already at the beginning, or nothing selected
+                    if (dgvCurrentRowIndex != 0 && dgvCurrentRowIndex != -1)
+                    {
+                        // Go back one
+                        dgvMain[1, dgvCurrentRowIndex - 1].Selected = true;
+                    }
+
+                    // Cleanup
+                    r.Dispose();
+                }
+            }
         }
 
 
@@ -71,12 +160,14 @@ namespace PNG_SD_Info_Viewer
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.Rows.Clear();
-            imgList.Images.Clear();
+            //imgList.Images.Clear();
+            arList.Clear();
             txtParameters.Text = "";
             picbImageDisplay.Image = null;
 
-            // Set the side of the images in the imagelist
-            imgList.ImageSize = new Size(wSize, hSize);
+            // Set the side of the images in the imagelist (no longer used)
+            //imgList.ImageSize = new Size(wSize, hSize);
+            
             
 
             // Setup datagridview columns if DGV is active
@@ -89,6 +180,7 @@ namespace PNG_SD_Info_Viewer
                 iconColumn.Name = "Images";
                 iconColumn.HeaderText = "Images:";
                 iconColumn.ImageLayout = DataGridViewImageCellLayout.Normal;
+                //iconColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
                 iconColumn.Description = "Zoomed";
                 txtColumn.Name = "Filename:";
                 txtColumn.HeaderText = "Filename:";
@@ -132,14 +224,30 @@ namespace PNG_SD_Info_Viewer
                         // Convert our image to a smaller bitmap, then add it to the ImageList
                         using (var tempImage = Image.FromFile(file.FullName))
                         {
-                            Bitmap bmp = new Bitmap(wSize, hSize);
+                            int hSize2 = hSize;
+                            int wSize2 = wSize;
+
+                            if (tempImage.Width > tempImage.Height)
+                            {
+                                int wDiff = tempImage.Width / wSize;
+                                hSize2 = tempImage.Height / wDiff;
+                            }
+                            else if (tempImage.Width < tempImage.Height)
+                            {
+                                int hDiff = tempImage.Height / hSize;
+                                wSize2 = tempImage.Width / hDiff;
+                            }
+                            
+                            
+                            Bitmap bmp = new Bitmap(wSize2, hSize2);
                             using (Graphics g = Graphics.FromImage(bmp))
                             {
                                 g.DrawImage(tempImage, new Rectangle(0, 0, bmp.Width, bmp.Height));
                             }
 
                             // Add the resized bitmap to our imagelist
-                            imgList.Images.Add(bmp);
+                            // imgList.Images.Add(bmp);
+                            arList.Add(bmp);
                         }
                     }
                     // If we do not have a good image because the filepath is too long, show error
@@ -160,11 +268,13 @@ namespace PNG_SD_Info_Viewer
             // Add items to the DGV if it is active
             if (dgvMain.Visible == true)
             {
-                for (int j = 0; j < imgList.Images.Count; j++)
+                //for (int j = 0; j < imgList.Images.Count; j++)
+                for (int j = 0; j < arList.Count; j++)
                 {
                     // Add a row and set its value to the image in first column, and filename in second
                     dgvMain.Rows.Add();
-                    dgvMain.Rows[j].Cells[0].Value = imgList.Images[j];
+                    //dgvMain.Rows[j].Cells[0].Value = imgList.Images[j];
+                    dgvMain.Rows[j].Cells[0].Value = arList[j];
                     dgvMain.Rows[j].Cells[1].Value = Files[j].Name;
 
                     // Update cellsize for each row
@@ -264,6 +374,9 @@ namespace PNG_SD_Info_Viewer
             // Set the picturebox to display the image based on the stored path plus the selected filename
             picbImageDisplay.ImageLocation = openPath + "\\" + selectedImage;
 
+            // Reset the picturebox style and location
+            resetPB();
+
             // Show the selected filename on the UI
             lblFilename.Text = selectedImage;
 
@@ -333,7 +446,8 @@ namespace PNG_SD_Info_Viewer
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Empty memory.  Probably not really necessary, but whatever.
-            imgList.Dispose();
+            //imgList.Dispose();
+            arList.Clear();
             lstbFilelist.Items.Clear();
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
@@ -348,7 +462,7 @@ namespace PNG_SD_Info_Viewer
         // About button
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            txtParameters.Text = "PNG-SD-Info-Viewer is a program designed to quickly allow the browsing of PNG files with associated metadata from Stable Diffusion generated images.\r\n - By Omnia the Garlic Cookie\r\nhttps://github.com/GarlicCookie/PNG-SD-Info-Viewer\r\nGNU GPL3";
+            txtParameters.Text = "PNG-SD-Info-Viewer is a program designed to quickly allow the browsing of PNG files with associated metadata from Stable Diffusion generated images.\r\nIt now also allows quick image tagging so favorites can be copied out to a new location.\r\nThere is a filename list view, and, an image preview view.  Image preview size can be adjusted.\r\nMouse scrolling over the image will go to next or previous image.\r\nLeft-clicking on the image will zoom.\r\nHolding middle-mouse button and dragging will move the image.\r\n - By Omnia the Garlic Cookie\r\nhttps://github.com/GarlicCookie/PNG-SD-Info-Viewer\r\nGNU GPL3";
         }
 
 
@@ -596,6 +710,106 @@ namespace PNG_SD_Info_Viewer
                     }
                 }
             }
+        }
+
+
+        private void picbImageDisplay_Click(object sender, MouseEventArgs e)
+        {
+            // Left click the image, so zoom in.
+            if (e.Button == MouseButtons.Left)
+            {
+                // If already in 'zoom' view mode (which is actually the fullsize view)
+                if (picbImageDisplay.SizeMode == PictureBoxSizeMode.Zoom)
+                {
+                    // Change to non-zoom mode, called Normal.  This puts the image at its true 1:1 resolution and size.
+                    picbImageDisplay.SizeMode = PictureBoxSizeMode.Normal;
+                    
+                    // Resize the picturebox to match the new image size
+                    picbImageDisplay.Width = picbImageDisplay.Image.Width;
+                    picbImageDisplay.Height= picbImageDisplay.Image.Height;
+
+                    // Put it at the center of the panel container
+                    picbImageDisplay.Location = new Point((picbImageDisplay.Parent.ClientSize.Width / 2) - (picbImageDisplay.Width / 2),
+                              (picbImageDisplay.Parent.ClientSize.Height / 2) - (picbImageDisplay.Height / 2));
+                    
+                    // Refresh
+                    picbImageDisplay.Refresh();
+
+                    // debug text 
+                    /*txtParameters.Text = "picb width: " + picbImageDisplay.Width.ToString() + "\r\n";
+                    txtParameters.Text += "picb height: " + picbImageDisplay.Height.ToString() + "\r\n";
+                    txtParameters.Text += "pan width: " + panMain.Width.ToString() + "\r\n";
+                    txtParameters.Text += "pan height :" + panMain.Height.ToString() + "\r\n";
+                    txtParameters.Text += "picb top: " + picbImageDisplay.Top.ToString() + "\r\n";
+                    txtParameters.Text += "picb left: " + picbImageDisplay.Left.ToString() + "\r\n";*/
+                }
+                // Already in "Normal" 1:1 mode, so reset it to default view
+                else
+                {
+                    // Reset our PB to zoomed mode at 0,0
+                    resetPB();
+                }
+            }
+        }
+
+
+        // Resets the picturebox in the panel to normal view
+        private void resetPB()
+        {
+            // Change dimensions to fit panel
+            picbImageDisplay.Width = panMain.Width;
+            picbImageDisplay.Height = panMain.Height;
+
+            // Put the picturebox back where it belongs, at the top left of the panel
+            picbImageDisplay.Top = 0;
+            picbImageDisplay.Left = 0;
+
+            // Change to zoom mode, which fits the image to the picturebox
+            picbImageDisplay.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+
+        // Detect movement in the picturebox
+        private void picbImageDisplay_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Simple null check, but should never be null anyways
+            if (sender != null) { 
+            Control? c = sender as Control;             // Added "?" to allow nullable to correct intellisense error
+                // Are we dragging the mouse with the button held down?
+                if (isMouseDragging && c != null)
+                {
+                    // Adjust the coordinates of the picturebox
+                    c.Top = e.Y + c.Top - yPos;
+                    c.Left = e.X + c.Left - xPos;
+                }
+            }
+        }
+
+        // Detect mouse press
+        private void picbImageDisplay_MouseDown(object sender, MouseEventArgs e)
+        {
+            // If the middle button is pressed
+            if (e.Button == MouseButtons.Middle)
+            {
+                // Turn on drag mode and get the mouse coordinates for the adjustment
+                isMouseDragging = true;
+                xPos = e.X;
+                yPos = e.Y;
+            }
+        }
+
+        // Detect mouse lift
+        private void picbImageDisplay_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Turn off drag mode
+            isMouseDragging = false;
+        }
+
+
+
+        private void panMain_Resize(object sender, EventArgs e)
+        {
+            resetPB();
         }
     }
 

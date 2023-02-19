@@ -59,23 +59,26 @@
             this.btnCopyPrompt = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.chkTag = new System.Windows.Forms.CheckBox();
+            this.panMain = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
+            this.panMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // picbImageDisplay
             // 
-            this.picbImageDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.picbImageDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picbImageDisplay.Location = new System.Drawing.Point(361, 70);
+            this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.picbImageDisplay.Location = new System.Drawing.Point(0, 0);
             this.picbImageDisplay.Name = "picbImageDisplay";
-            this.picbImageDisplay.Size = new System.Drawing.Size(846, 383);
+            this.picbImageDisplay.Size = new System.Drawing.Size(844, 381);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbImageDisplay.TabIndex = 0;
             this.picbImageDisplay.TabStop = false;
+            this.picbImageDisplay.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picbImageDisplay_Click);
+            this.picbImageDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picbImageDisplay_MouseDown);
+            this.picbImageDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picbImageDisplay_MouseMove);
+            this.picbImageDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picbImageDisplay_MouseUp);
             // 
             // btnSelectFolder
             // 
@@ -241,7 +244,7 @@
             this.pxToolStripMenuItem1,
             this.pxToolStripMenuItem2});
             this.imageListWidthToolStripMenuItem.Name = "imageListWidthToolStripMenuItem";
-            this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imageListWidthToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.imageListWidthToolStripMenuItem.Text = "&Image List Width";
             // 
             // pxToolStripMenuItem3
@@ -299,11 +302,11 @@
             // 
             this.dgvMain.AllowUserToAddRows = false;
             this.dgvMain.AllowUserToDeleteRows = false;
-            this.dgvMain.AllowUserToResizeColumns = false;
             this.dgvMain.AllowUserToResizeRows = false;
             this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvMain.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMain.Location = new System.Drawing.Point(12, 70);
             this.dgvMain.MultiSelect = false;
@@ -362,11 +365,25 @@
             this.chkTag.UseVisualStyleBackColor = true;
             this.chkTag.Click += new System.EventHandler(this.chkTag_Click);
             // 
+            // panMain
+            // 
+            this.panMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panMain.Controls.Add(this.picbImageDisplay);
+            this.panMain.Location = new System.Drawing.Point(361, 70);
+            this.panMain.Name = "panMain";
+            this.panMain.Size = new System.Drawing.Size(846, 383);
+            this.panMain.TabIndex = 16;
+            this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1225, 687);
+            this.Controls.Add(this.panMain);
             this.Controls.Add(this.chkTag);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCopyPrompt);
@@ -380,7 +397,6 @@
             this.Controls.Add(this.txtParameters);
             this.Controls.Add(this.lstbFilelist);
             this.Controls.Add(this.btnSelectFolder);
-            this.Controls.Add(this.picbImageDisplay);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -392,6 +408,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
+            this.panMain.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -429,5 +446,6 @@
         private ToolStripMenuItem tagToolStripMenuItem;
         private ToolStripMenuItem tagImageToolStripMenuItem;
         private ToolStripMenuItem copyTaggedImagesToolStripMenuItem;
+        private Panel panMain;
     }
 }
