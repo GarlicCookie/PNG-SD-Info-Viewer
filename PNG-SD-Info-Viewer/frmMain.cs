@@ -222,7 +222,7 @@ namespace PNG_SD_Info_Viewer
                     if (badImage == false)
                     {
                         // Convert our image to a smaller bitmap, then add it to the ImageList
-                        using (var tempImage = Image.FromFile(file.FullName))
+                        using (var tempImage = Image.FromFile(file.FullName))       //FromFile method has a path limit!
                         {
                             int hSize2 = hSize;
                             int wSize2 = wSize;

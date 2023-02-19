@@ -13,6 +13,7 @@ namespace PNG_SD_Info_Viewer
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new frmMain());
+            
         }
     }
 }
