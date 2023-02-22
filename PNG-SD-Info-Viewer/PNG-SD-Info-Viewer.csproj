@@ -9,7 +9,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>00137-2000916955.ico</ApplicationIcon>
     <Title>PNG-SD-Info-Viewer</Title>
-    <Version>2.2</Version>
+    <Version>2.3</Version>
     <Authors>$(AssemblyName), GarlicCookie</Authors>
     <Copyright>© 2023 - GNU GPL3, see GitHub for details</Copyright>
     <Company>$(Authors), GarlicCookie</Company>

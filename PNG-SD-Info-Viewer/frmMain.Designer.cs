@@ -62,6 +62,8 @@
             this.dgvMain = new System.Windows.Forms.DataGridView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.btnCopyImage = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panMain.SuspendLayout();
@@ -79,7 +81,7 @@
             // picbImageDisplay
             // 
             this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picbImageDisplay.Location = new System.Drawing.Point(307, 95);
+            this.picbImageDisplay.Location = new System.Drawing.Point(302, 90);
             this.picbImageDisplay.Name = "picbImageDisplay";
             this.picbImageDisplay.Size = new System.Drawing.Size(261, 180);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -109,7 +111,7 @@
             this.txtParameters.Multiline = true;
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtParameters.Size = new System.Drawing.Size(897, 129);
+            this.txtParameters.Size = new System.Drawing.Size(887, 129);
             this.txtParameters.TabIndex = 3;
             // 
             // lblFilesInFolder
@@ -153,11 +155,11 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(775, 5);
+            this.btnCopy.Location = new System.Drawing.Point(765, 5);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(122, 23);
             this.btnCopy.TabIndex = 8;
-            this.btnCopy.Text = "Copy All";
+            this.btnCopy.Text = "Copy All Text";
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
@@ -308,7 +310,7 @@
             // btnCopyPrompt
             // 
             this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyPrompt.Location = new System.Drawing.Point(519, 5);
+            this.btnCopyPrompt.Location = new System.Drawing.Point(509, 5);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
             this.btnCopyPrompt.Size = new System.Drawing.Size(122, 23);
             this.btnCopyPrompt.TabIndex = 13;
@@ -319,7 +321,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(647, 5);
+            this.button1.Location = new System.Drawing.Point(637, 5);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(122, 23);
             this.button1.TabIndex = 14;
@@ -349,7 +351,7 @@
             this.panMain.Controls.Add(this.picbImageDisplay);
             this.panMain.Location = new System.Drawing.Point(4, 18);
             this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(891, 413);
+            this.panMain.Size = new System.Drawing.Size(881, 403);
             this.panMain.TabIndex = 16;
             this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
             // 
@@ -431,6 +433,7 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer2.Panel1.Controls.Add(this.lblStatus);
             this.splitContainer2.Panel1.Controls.Add(this.lblImage);
             this.splitContainer2.Panel1.Controls.Add(this.lblFilename);
             this.splitContainer2.Panel1.Controls.Add(this.panMain);
@@ -438,15 +441,37 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer2.Panel2.Controls.Add(this.btnCopyImage);
             this.splitContainer2.Panel2.Controls.Add(this.lblParameters);
             this.splitContainer2.Panel2.Controls.Add(this.txtParameters);
             this.splitContainer2.Panel2.Controls.Add(this.button1);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopy);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopyPrompt);
-            this.splitContainer2.Size = new System.Drawing.Size(898, 614);
-            this.splitContainer2.SplitterDistance = 434;
+            this.splitContainer2.Size = new System.Drawing.Size(888, 614);
+            this.splitContainer2.SplitterDistance = 424;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 17;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStatus.Location = new System.Drawing.Point(509, 0);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(376, 15);
+            this.lblStatus.TabIndex = 18;
+            this.lblStatus.Text = "Status";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // btnCopyImage
+            // 
+            this.btnCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopyImage.Location = new System.Drawing.Point(381, 5);
+            this.btnCopyImage.Name = "btnCopyImage";
+            this.btnCopyImage.Size = new System.Drawing.Size(122, 23);
+            this.btnCopyImage.TabIndex = 15;
+            this.btnCopyImage.Text = "Copy Image";
+            this.btnCopyImage.UseVisualStyleBackColor = true;
+            this.btnCopyImage.Click += new System.EventHandler(this.btnCopyImage_Click);
             // 
             // frmMain
             // 
@@ -520,5 +545,7 @@
         private DataGridView dgvMain;
         private SplitContainer splitContainer1;
         private SplitContainer splitContainer2;
+        private Label lblStatus;
+        private Button btnCopyImage;
     }
 }

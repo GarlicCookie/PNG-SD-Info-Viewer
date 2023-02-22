@@ -10,6 +10,7 @@ Features:
  - List view, or image preview view
  - Resizable window
  - Image fit-to-box, or full-size views, with image panning
+ - Easy copying to clipboard of text parameters, or the image itself
  - Quick "tagging" to help cull favorite images.  Tags are stored in memory only, and do NOT affect the files.
  - Quick "copy to folder" function to save all your favorites to a new folder
  - Scrollwheel use to move quickly between images

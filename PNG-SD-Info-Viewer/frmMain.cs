@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection.Emit;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -17,6 +18,9 @@ namespace PNG_SD_Info_Viewer
     {
         // ImageList object, used to fill in a DataGridView for image list mode (no longer used)
         //ImageList imgList = new ImageList();
+
+        // Timer for text fading effect
+        System.Windows.Forms.Timer labelFader = new System.Windows.Forms.Timer();
 
         // Array of images
         ArrayList arList = new ArrayList();
@@ -43,11 +47,15 @@ namespace PNG_SD_Info_Viewer
         // Launchpoint
         public frmMain()
         {
+            // Setup event handler for timer, used for text fade effect
+            labelFader.Tick += new EventHandler(labelFader_Tick!);
+
             InitializeComponent();
 
             // Empty some of the textboxes.
             lblFolderSelected.Text = "";
             lblFilename.Text = "";
+            lblStatus.Text = "";
 
             // Fire up the mousewheel detection on the picturebox
             picbImageDisplay.MouseWheel += PicbImageDisplay_MouseWheel;
@@ -462,7 +470,7 @@ namespace PNG_SD_Info_Viewer
         // About button
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            txtParameters.Text = "PNG-SD-Info-Viewer is a program designed to quickly allow the browsing of PNG files with associated metadata from Stable Diffusion generated images.\r\nIt now also allows quick image tagging so favorites can be copied out to a new location.\r\nThere is a filename list view, and, an image preview view.  Image preview size can be adjusted.\r\nMouse scrolling over the image will go to next or previous image.\r\nLeft-clicking on the image will zoom.\r\nHolding middle-mouse button and dragging will move the image.\r\n - By Omnia the Garlic Cookie\r\nhttps://github.com/GarlicCookie/PNG-SD-Info-Viewer\r\nGNU GPL3";
+            txtParameters.Text = "PNG-SD-Info-Viewer is a program designed to quickly allow the browsing of PNG files with associated metadata from Stable Diffusion generated images.\r\nIt now also allows quick image tagging so favorites can be copied out to a new location.\r\nThere is a filename list view, and, an image preview view.  Image preview size can be adjusted.\r\nMouse scrolling over the image will go to next or previous image.\r\nLeft-clicking on the image will zoom.\r\nHolding middle-mouse button and dragging will move the image.\r\nRight-clicking the image will copy the image to your clipboard.\r\n - By Omnia, the Garlic Cookie\r\nhttps://github.com/GarlicCookie/PNG-SD-Info-Viewer\r\nGNU GPL3";
         }
 
 
@@ -517,8 +525,14 @@ namespace PNG_SD_Info_Viewer
         // Simple method to copy parameters to clipboard
         private void btnCopy_Click(object sender, EventArgs e)
         {
+            // Grab the full prompt text, leave if it is empty
+            string s = txtParameters.Text;
+            if (s == "") { return; }
+
             // Copies to clipboard
-            Clipboard.SetText(txtParameters.Text);
+            Clipboard.SetText(s);
+            // Status Update
+            updateStatusBox("Copied to clipboard");
         }
 
         // Copy prompt button
@@ -539,6 +553,9 @@ namespace PNG_SD_Info_Viewer
                 {
                     // Copies to clipboard
                     Clipboard.SetText(component);
+
+                    // Status Update
+                    updateStatusBox("Prompt copied to clipboard");
                 }
             }
         }
@@ -573,7 +590,13 @@ namespace PNG_SD_Info_Viewer
             }
 
             // Copies to clipboard
-            Clipboard.SetText(stringToCopy);
+            if (stringToCopy != "")
+            {
+                Clipboard.SetText(stringToCopy);
+            }
+            
+            // Status Update
+            updateStatusBox("Prompt + Neg copied to clipboard");
         }
 
 
@@ -753,11 +776,50 @@ namespace PNG_SD_Info_Viewer
                     resetPB();
                 }
             }
+            // Right click the image, so copy to clipboard
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (picbImageDisplay.Image != null)
+                {
+                    // Copy if image is loaded
+                    Clipboard.SetImage(picbImageDisplay.Image);
+
+                    // Status Update
+                    updateStatusBox("Image copied to clipboard");
+                }
+            }
         }
 
 
-        // Resets the picturebox in the panel to normal view
-        private void resetPB()
+        // Update the lblStatus label with passed text, and fade it out
+        private void updateStatusBox(string s)
+        {
+            lblStatus.ForeColor = Color.Black;
+            lblStatus.Text = s;
+            labelFader.Start();
+        }
+
+
+        // Fadeout timer
+        private void labelFader_Tick(object sender, EventArgs e)
+        {
+            // Set the speed
+            int fadingSpeed = 30;
+
+            // Setup the color RGB to move from black to background color over time
+            lblStatus.ForeColor = Color.FromArgb(lblStatus.ForeColor.R + fadingSpeed, lblStatus.ForeColor.G + fadingSpeed, lblStatus.ForeColor.B + fadingSpeed);
+
+            // Stop when the color reaches where it needs to go
+            if (lblStatus.ForeColor.R >= this.BackColor.R)
+            {
+                labelFader.Stop();
+                lblStatus.ForeColor = this.BackColor;
+            }
+        }
+
+
+            // Resets the picturebox in the panel to normal view
+            private void resetPB()
         {
             // Change dimensions to fit panel
             picbImageDisplay.Width = panMain.Width;
@@ -813,6 +875,18 @@ namespace PNG_SD_Info_Viewer
         private void panMain_Resize(object sender, EventArgs e)
         {
             resetPB();
+        }
+
+        private void btnCopyImage_Click(object sender, EventArgs e)
+        {
+            if (picbImageDisplay.Image != null)
+            {
+                // Copy if image is loaded
+                Clipboard.SetImage(picbImageDisplay.Image);
+
+                // Status Update
+                updateStatusBox("Image copied to clipboard");
+            }
         }
     }
 
