@@ -14,6 +14,7 @@ Features:
  - Quick "copy to folder" function to save all your favorites to a new folder
  - Scrollwheel use to move quickly between images
  - View full generation metadata from images and quickly copy to clipboard
+ - Resizable GUI elements
 
 
 
