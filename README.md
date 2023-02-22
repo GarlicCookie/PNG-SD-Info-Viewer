@@ -21,7 +21,7 @@ Features:
 
 Uses, and thanks to, the <a href="https://github.com/drewnoakes/metadata-extractor">metadata-extractor library</a> developed by Drew Noakes under <a href="http://www.apache.org/licenses/LICENSE-2.0">the Apache License 2</a>
 
-![Screenshot](webfiles/screenshot3.jpg?raw=true "Screenshot")
+![Screenshot](webfiles/screenshot4.jpg?raw=true "Screenshot")
 
 
 
