@@ -17,6 +17,7 @@ Features:
  - Scrollwheel use to move quickly between images
  - View full generation metadata from images and quickly copy to clipboard
  - Customizable view options, sortable by model, seed, etc.
+ - Configuration can be saved to disk, so you can use your favorite mode and view instantly
 
 
 

@@ -66,6 +66,12 @@ namespace PNG_SD_Info_Viewer
             lblFilename.Text = "";
             lblStatus.Text = "";
 
+            // Load saved settings
+            loadSettings();
+
+            // Set menu checkmarks on the menubar accordingly.
+            setMenuChecks();
+
             // Fire up the mousewheel detection on the picturebox
             picbImageDisplay.MouseWheel += PicbImageDisplay_MouseWheel;
         }
@@ -237,6 +243,16 @@ namespace PNG_SD_Info_Viewer
                 {
                     // Add image to ImageList using memory optimization method.  Converts to resized bitmap then adds.            
 
+                    // Turn on progress bar
+                    if (imageColumnActive == true)
+                    {
+                        progressBar1.Visible = true;
+                        lblLoading.Visible = true;
+                        lblLoading.Refresh();
+                        progressBar1.Maximum = Files.Length - 1;
+                        progressBar1.Value = arList.Count;
+                    }
+
                     // Set a bool for checking if we have a path that's too long
                     bool badImage = false;
 
@@ -296,7 +312,11 @@ namespace PNG_SD_Info_Viewer
                     {
                         MessageBox.Show(errorNotifier);
                     }
-                    
+
+                    // Turn off progress bar
+                    progressBar1.Visible = false;
+                    lblLoading.Visible = false; ;
+
                     // Reset the bad image indicator for the next iteration
                     badImage = false;
 
@@ -434,8 +454,11 @@ namespace PNG_SD_Info_Viewer
                     // Set the Row height.
                     dgvMain.Rows[cell.RowIndex].Height = hSize;
 
-                    // Set the Column height.
-                    dgvMain.Columns[0].Width = wSize;
+                    // Set the Column width for the image column if it is displayed.  You can just use index 0 since it is always in that spot if it is active.
+                    if (imageColumnActive == true)
+                    {
+                        dgvMain.Columns[0].Width = wSize;
+                    }
                 }
                 
                 // All items added, now select nothing.  Otherwise, DGV selects first row by default but doesn't update.
@@ -1141,6 +1164,107 @@ namespace PNG_SD_Info_Viewer
             }
             refreshFolder();
         }
-    }
 
+
+        private void setMenuChecks()
+        {
+            if (imageColumnActive == true) { imageToolStripMenuItem.Checked = true; } else { imageToolStripMenuItem.Checked = false; }
+            if (createDateColumnActive == true) { createdDateToolStripMenuItem.Checked =true; } else { createdDateToolStripMenuItem.Checked = false; }
+            if (modifiedDateColumnActive == true) { modifiedDateToolStripMenuItem.Checked=true; } else { modifiedDateToolStripMenuItem.Checked = false; }
+            if (modelHashColumnActive == true) { modelHashToolStripMenuItem.Checked = true; } else { modelHashToolStripMenuItem.Checked = false; }
+            if (modelNameColumnActive == true) { modelToolStripMenuItem.Checked = true; } else { modelToolStripMenuItem.Checked = false; }
+            if (seedColumnActive == true) { seedToolStripMenuItem.Checked = true; } else { seedToolStripMenuItem.Checked = false; }
+        }
+
+
+        public async Task saveSettings()
+        {
+            string viewMode = "simple";
+            if(dgvMain.Visible == true)
+            {
+                viewMode = "detailed";
+            }
+            
+            string[] lines =
+            {
+                "PNG-SD-Info-Viewer Settings File.  Do not Modify!  Deleting this file will reset your settings.", 
+                "------------------", 
+                imageColumnActive.ToString(),
+                filenameColumnActive.ToString(),
+                createDateColumnActive.ToString(),
+                modifiedDateColumnActive.ToString(),
+                modelNameColumnActive.ToString(),
+                modelHashColumnActive.ToString(),
+                seedColumnActive.ToString(),
+                viewMode,
+                hSize.ToString(),
+                wSize.ToString()
+            };
+            try
+            {
+                await File.WriteAllLinesAsync("PNG-SD-Info-Viewer.cfg", lines);
+                updateStatusBox("Settings saved to disk.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to save file." + ex.ToString());
+            }
+        }
+
+        private void loadSettings()
+        {
+            // Check for file
+            if (File.Exists("PNG-SD-Info-Viewer.cfg") == false)
+            {
+                return;
+            }
+
+            try
+            {
+                // Read file
+                string[] lines = System.IO.File.ReadAllLines(@"PNG-SD-Info-Viewer.cfg");
+
+                if (lines.Length != 12)
+                {
+                    // unexpected cfg length
+                    MessageBox.Show("Your config file is an unexpected length.  Loading default.");
+                    return;
+                }
+
+                imageColumnActive = bool.Parse(lines[2]);
+                filenameColumnActive = bool.Parse(lines[3]);
+                createDateColumnActive = bool.Parse(lines[4]);
+                modifiedDateColumnActive = bool.Parse(lines[5]);
+                modelNameColumnActive = bool.Parse(lines[6]);
+                modelHashColumnActive = bool.Parse(lines[7]);
+                seedColumnActive = bool.Parse(lines[8]);
+                string viewMode = lines[9];
+                hSize = int.Parse(lines[10]);
+                wSize = int.Parse(lines[11]);
+
+                if (viewMode == "detailed")
+                {
+                    dgvMain.Visible = true;
+                }
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Your config file is corrupt.  It is suggested to remove it.  A new one will be generated the next time you launch the program." + ex.ToString());
+                return;
+            }
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            loadSettings();
+        }
+
+       
+
+        private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveSettings();
+        }
+    }
 }
