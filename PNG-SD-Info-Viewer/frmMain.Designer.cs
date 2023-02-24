@@ -40,6 +40,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +65,8 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnCopyImage = new System.Windows.Forms.Button();
+            this.imageListColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createdDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panMain.SuspendLayout();
@@ -81,7 +84,7 @@
             // picbImageDisplay
             // 
             this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picbImageDisplay.Location = new System.Drawing.Point(302, 90);
+            this.picbImageDisplay.Location = new System.Drawing.Point(300, 88);
             this.picbImageDisplay.Name = "picbImageDisplay";
             this.picbImageDisplay.Size = new System.Drawing.Size(261, 180);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -111,7 +114,7 @@
             this.txtParameters.Multiline = true;
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtParameters.Size = new System.Drawing.Size(887, 129);
+            this.txtParameters.Size = new System.Drawing.Size(883, 129);
             this.txtParameters.TabIndex = 3;
             // 
             // lblFilesInFolder
@@ -155,7 +158,7 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(765, 5);
+            this.btnCopy.Location = new System.Drawing.Point(761, 5);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(122, 23);
             this.btnCopy.TabIndex = 8;
@@ -182,6 +185,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem,
+            this.refreshToolStripMenuItem,
             this.quitToolStripMenuItem1});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -195,6 +199,14 @@
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.refreshToolStripMenuItem.Text = "&Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
             // quitToolStripMenuItem1
             // 
             this.quitToolStripMenuItem1.Name = "quitToolStripMenuItem1";
@@ -207,7 +219,8 @@
             // 
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileListToolStripMenuItem,
-            this.imageListToolStripMenuItem});
+            this.imageListToolStripMenuItem,
+            this.imageListColumnsToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.menuToolStripMenuItem.Text = "&List";
@@ -216,7 +229,7 @@
             // 
             this.fileListToolStripMenuItem.Name = "fileListToolStripMenuItem";
             this.fileListToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
-            this.fileListToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.fileListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fileListToolStripMenuItem.Text = "&File List";
             this.fileListToolStripMenuItem.Click += new System.EventHandler(this.fileListToolStripMenuItem_Click);
             // 
@@ -224,7 +237,7 @@
             // 
             this.imageListToolStripMenuItem.Name = "imageListToolStripMenuItem";
             this.imageListToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
-            this.imageListToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.imageListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.imageListToolStripMenuItem.Text = "&Image List";
             this.imageListToolStripMenuItem.Click += new System.EventHandler(this.imageListToolStripMenuItem_Click);
             // 
@@ -310,7 +323,7 @@
             // btnCopyPrompt
             // 
             this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyPrompt.Location = new System.Drawing.Point(509, 5);
+            this.btnCopyPrompt.Location = new System.Drawing.Point(505, 5);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
             this.btnCopyPrompt.Size = new System.Drawing.Size(122, 23);
             this.btnCopyPrompt.TabIndex = 13;
@@ -321,7 +334,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(637, 5);
+            this.button1.Location = new System.Drawing.Point(633, 5);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(122, 23);
             this.button1.TabIndex = 14;
@@ -351,7 +364,7 @@
             this.panMain.Controls.Add(this.picbImageDisplay);
             this.panMain.Location = new System.Drawing.Point(4, 18);
             this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(881, 403);
+            this.panMain.Size = new System.Drawing.Size(877, 399);
             this.panMain.TabIndex = 16;
             this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
             // 
@@ -447,15 +460,15 @@
             this.splitContainer2.Panel2.Controls.Add(this.button1);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopy);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopyPrompt);
-            this.splitContainer2.Size = new System.Drawing.Size(888, 614);
-            this.splitContainer2.SplitterDistance = 424;
+            this.splitContainer2.Size = new System.Drawing.Size(884, 614);
+            this.splitContainer2.SplitterDistance = 420;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 17;
             // 
             // lblStatus
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStatus.Location = new System.Drawing.Point(509, 0);
+            this.lblStatus.Location = new System.Drawing.Point(505, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(376, 15);
             this.lblStatus.TabIndex = 18;
@@ -465,13 +478,31 @@
             // btnCopyImage
             // 
             this.btnCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyImage.Location = new System.Drawing.Point(381, 5);
+            this.btnCopyImage.Location = new System.Drawing.Point(377, 5);
             this.btnCopyImage.Name = "btnCopyImage";
             this.btnCopyImage.Size = new System.Drawing.Size(122, 23);
             this.btnCopyImage.TabIndex = 15;
             this.btnCopyImage.Text = "Copy Image";
             this.btnCopyImage.UseVisualStyleBackColor = true;
             this.btnCopyImage.Click += new System.EventHandler(this.btnCopyImage_Click);
+            // 
+            // imageListColumnsToolStripMenuItem
+            // 
+            this.imageListColumnsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createdDateToolStripMenuItem});
+            this.imageListColumnsToolStripMenuItem.Name = "imageListColumnsToolStripMenuItem";
+            this.imageListColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imageListColumnsToolStripMenuItem.Text = "Image List Columns";
+            // 
+            // createdDateToolStripMenuItem
+            // 
+            this.createdDateToolStripMenuItem.Checked = true;
+            this.createdDateToolStripMenuItem.CheckOnClick = true;
+            this.createdDateToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.createdDateToolStripMenuItem.Name = "createdDateToolStripMenuItem";
+            this.createdDateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createdDateToolStripMenuItem.Text = "Created Date";
+            this.createdDateToolStripMenuItem.CheckedChanged += new System.EventHandler(this.createdDateToolStripMenuItem_CheckedChanged);
             // 
             // frmMain
             // 
@@ -547,5 +578,8 @@
         private SplitContainer splitContainer2;
         private Label lblStatus;
         private Button btnCopyImage;
+        private ToolStripMenuItem refreshToolStripMenuItem;
+        private ToolStripMenuItem imageListColumnsToolStripMenuItem;
+        private ToolStripMenuItem createdDateToolStripMenuItem;
     }
 }

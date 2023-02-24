@@ -44,6 +44,9 @@ namespace PNG_SD_Info_Viewer
         // Mouse y pos when dragging
         int yPos;
 
+        // Bools on whether or not columns are active
+        bool createDateColumnActive = true;
+
         // Launchpoint
         public frmMain()
         {
@@ -183,15 +186,27 @@ namespace PNG_SD_Info_Viewer
             {
                 DataGridViewImageColumn iconColumn = new DataGridViewImageColumn();
                 DataGridViewTextBoxColumn txtColumn = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn createdColumn = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn modelHashColumn = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn modelNameColumn = new DataGridViewTextBoxColumn();
                 dgvMain.Columns.Add(iconColumn);
                 dgvMain.Columns.Add(txtColumn);
+                if (createDateColumnActive == true) { dgvMain.Columns.Add(createdColumn); }
+                
+                dgvMain.Columns.Add(modelHashColumn);
+                dgvMain.Columns.Add(modelNameColumn);
                 iconColumn.Name = "Images";
                 iconColumn.HeaderText = "Images:";
                 iconColumn.ImageLayout = DataGridViewImageCellLayout.Normal;
-                //iconColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
                 iconColumn.Description = "Zoomed";
                 txtColumn.Name = "Filename:";
                 txtColumn.HeaderText = "Filename:";
+                createdColumn.Name = "Created:";
+                createdColumn.HeaderText = "Created:";
+                modelHashColumn.Name = "Model hash:";
+                modelHashColumn.HeaderText = "Model hash:";
+                modelNameColumn.Name = "Model:";
+                modelNameColumn.HeaderText = "Model:";
             }
 
             // Get all the png files from the provided path and put into array
@@ -204,11 +219,10 @@ namespace PNG_SD_Info_Viewer
                 // Add item to listbox
                 lstbFilelist.Items.Add(file.Name);
 
-                // Add filename to imgList object, with the full path as a key.  Might use the keyname later to lookup an image.  Only do this if we are using a DGV to save CPU and memory!
+                // Add filename to imgList/arList object, with the full path as a key.  Might use the keyname later to lookup an image.  Only do this if we are using a DGV to save CPU and memory!
                 if (dgvMain.Visible == true)
                 {
-                    // Add image to ImageList using memory optimization method.  Converts to resized bitmap then adds.
-                    // inprogress: check fullname length!                
+                    // Add image to ImageList using memory optimization method.  Converts to resized bitmap then adds.            
 
                     // Set a bool for checking if we have a path that's too long
                     bool badImage = false;
@@ -235,6 +249,7 @@ namespace PNG_SD_Info_Viewer
                             int hSize2 = hSize;
                             int wSize2 = wSize;
 
+                            // Maintain aspect ratio (this isn't perfect but works pretty well)
                             if (tempImage.Width > tempImage.Height)
                             {
                                 int wDiff = tempImage.Width / wSize;
@@ -246,7 +261,7 @@ namespace PNG_SD_Info_Viewer
                                 wSize2 = tempImage.Width / hDiff;
                             }
                             
-                            
+                            // Create new image in memory to store
                             Bitmap bmp = new Bitmap(wSize2, hSize2);
                             using (Graphics g = Graphics.FromImage(bmp))
                             {
@@ -279,11 +294,88 @@ namespace PNG_SD_Info_Viewer
                 //for (int j = 0; j < imgList.Images.Count; j++)
                 for (int j = 0; j < arList.Count; j++)
                 {
+                    // Index for cell column.  TODO:  Use this to toggle columns on/off
+                    int cellCol = 0;
+                    
                     // Add a row and set its value to the image in first column, and filename in second
                     dgvMain.Rows.Add();
                     //dgvMain.Rows[j].Cells[0].Value = imgList.Images[j];
-                    dgvMain.Rows[j].Cells[0].Value = arList[j];
-                    dgvMain.Rows[j].Cells[1].Value = Files[j].Name;
+                    dgvMain.Rows[j].Cells[cellCol].Value = arList[j];
+                    cellCol++;
+                    dgvMain.Rows[j].Cells[cellCol].Value = Files[j].Name;
+                    cellCol++;
+
+                    // Add additional file metadata
+                    // Dates (currently using created date only).  Get file info for created and modified dates and store into vars.
+                    var created = Files[j].CreationTime;
+                    var lastmodified = Files[j].LastWriteTime;      // not used yet
+
+                    // Add column value for created date
+                    if (createDateColumnActive == true)
+                    {
+                        dgvMain.Rows[j].Cells[cellCol].Value = created;
+                        cellCol++;
+                    }
+
+                    // Grab the EXIF data for columns
+                    IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(Files[j].FullName);
+                    foreach (var directory in directories)
+                        foreach (var tag in directory.Tags)
+                        {
+                            if (tag.Name == "Textual Data")
+                            {
+                                // Parse text
+                                string parsed = ($"{tag.Description}").Replace("Negative prompt:", "\r\n\r\nNegative Prompt:");
+                                parsed = parsed.Replace("Steps:", "\r\n\r\nSteps:");
+                                parsed = parsed.Replace("Sampler:", "\r\nSampler:");
+                                parsed = parsed.Replace("CFG scale:", "\r\nCFG scale:");
+                                parsed = parsed.Replace("Seed:", "\r\nSeed:");
+                                parsed = parsed.Replace("Size:", "\r\nSize:");
+                                parsed = parsed.Replace("Model hash:", "\r\nModel hash:");
+                                parsed = parsed.Replace("Model:", "\r\nModel:");
+                                parsed = parsed.Replace("Denoising strength:", "\r\nDenoising strength:");
+
+                                // Grab the full prompt text, leave if it is empty
+                                string s = parsed;
+                                if (s != "") 
+                                { 
+
+                                    // Split the text at line breaks
+                                    string[] components = s.Split("\r\n");
+
+                                    // Loop through each split spot and pull out what we need
+                                    foreach (string component in components)
+                                    {
+                                        // If the string is at least 12 long, and starts this way, we found our column
+                                        if ((component.Length >= 12) && (component.Substring(0, 12) == "Model hash: "))
+                                        {
+                                            // Add to column
+                                            string modelHashTrim = component.Replace(",", "");
+                                            modelHashTrim = modelHashTrim.Replace("Model hash: ", "");
+                                            dgvMain.Rows[j].Cells[cellCol].Value = modelHashTrim;
+                                            cellCol++;
+
+                                        }
+                                        // If the string is at least 12 long, and starts this way, we found our column
+                                        if ((component.Length >= 7) && (component.Substring(0, 7) == "Model: "))
+                                        {
+                                            // Add to column
+                                            string modelTrim = component.Replace(",", "");
+                                            modelTrim = modelTrim.Replace("Model: ", "");
+                                            dgvMain.Rows[j].Cells[cellCol].Value = modelTrim;
+                                            cellCol++;
+
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+
+
+
+
 
                     // Update cellsize for each row
                     DataGridViewCell cell = dgvMain.Rows[j].Cells[0];
@@ -886,6 +978,30 @@ namespace PNG_SD_Info_Viewer
 
                 // Status Update
                 updateStatusBox("Image copied to clipboard");
+            }
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Go find images if the path is set
+            if (openPath != "")
+            {
+                // Status Update
+                updateStatusBox("Refreshing open path");
+
+                findImagesInDirectory(openPath);
+            }
+        }
+
+        private void createdDateToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (createdDateToolStripMenuItem.Checked == true)
+            {
+                createDateColumnActive = true;
+            }
+            if (createdDateToolStripMenuItem.Checked == false)
+            {
+                createDateColumnActive = false;
             }
         }
     }
