@@ -45,6 +45,13 @@
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageListColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createdDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modifiedDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modelHashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.seedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListWidthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pxToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,8 +72,6 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnCopyImage = new System.Windows.Forms.Button();
-            this.imageListColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createdDateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picbImageDisplay)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panMain.SuspendLayout();
@@ -84,7 +89,7 @@
             // picbImageDisplay
             // 
             this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picbImageDisplay.Location = new System.Drawing.Point(300, 88);
+            this.picbImageDisplay.Location = new System.Drawing.Point(287, 75);
             this.picbImageDisplay.Name = "picbImageDisplay";
             this.picbImageDisplay.Size = new System.Drawing.Size(261, 180);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -114,7 +119,7 @@
             this.txtParameters.Multiline = true;
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtParameters.Size = new System.Drawing.Size(883, 129);
+            this.txtParameters.Size = new System.Drawing.Size(857, 129);
             this.txtParameters.TabIndex = 3;
             // 
             // lblFilesInFolder
@@ -158,7 +163,7 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(761, 5);
+            this.btnCopy.Location = new System.Drawing.Point(735, 5);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(122, 23);
             this.btnCopy.TabIndex = 8;
@@ -230,7 +235,7 @@
             this.fileListToolStripMenuItem.Name = "fileListToolStripMenuItem";
             this.fileListToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
             this.fileListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fileListToolStripMenuItem.Text = "&File List";
+            this.fileListToolStripMenuItem.Text = "&Simple List";
             this.fileListToolStripMenuItem.Click += new System.EventHandler(this.fileListToolStripMenuItem_Click);
             // 
             // imageListToolStripMenuItem
@@ -238,8 +243,73 @@
             this.imageListToolStripMenuItem.Name = "imageListToolStripMenuItem";
             this.imageListToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
             this.imageListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.imageListToolStripMenuItem.Text = "&Image List";
+            this.imageListToolStripMenuItem.Text = "&Detailed List";
             this.imageListToolStripMenuItem.Click += new System.EventHandler(this.imageListToolStripMenuItem_Click);
+            // 
+            // imageListColumnsToolStripMenuItem
+            // 
+            this.imageListColumnsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.imageToolStripMenuItem,
+            this.createdDateToolStripMenuItem,
+            this.modifiedDateToolStripMenuItem,
+            this.modelToolStripMenuItem,
+            this.modelHashToolStripMenuItem,
+            this.seedToolStripMenuItem});
+            this.imageListColumnsToolStripMenuItem.Name = "imageListColumnsToolStripMenuItem";
+            this.imageListColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imageListColumnsToolStripMenuItem.Text = "Image List Columns";
+            // 
+            // imageToolStripMenuItem
+            // 
+            this.imageToolStripMenuItem.Checked = true;
+            this.imageToolStripMenuItem.CheckOnClick = true;
+            this.imageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
+            this.imageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imageToolStripMenuItem.Text = "Image Preview";
+            this.imageToolStripMenuItem.CheckedChanged += new System.EventHandler(this.imageToolStripMenuItem_CheckedChanged);
+            // 
+            // createdDateToolStripMenuItem
+            // 
+            this.createdDateToolStripMenuItem.Checked = true;
+            this.createdDateToolStripMenuItem.CheckOnClick = true;
+            this.createdDateToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.createdDateToolStripMenuItem.Name = "createdDateToolStripMenuItem";
+            this.createdDateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createdDateToolStripMenuItem.Text = "Created Date";
+            this.createdDateToolStripMenuItem.CheckedChanged += new System.EventHandler(this.createdDateToolStripMenuItem_CheckedChanged);
+            // 
+            // modifiedDateToolStripMenuItem
+            // 
+            this.modifiedDateToolStripMenuItem.CheckOnClick = true;
+            this.modifiedDateToolStripMenuItem.Name = "modifiedDateToolStripMenuItem";
+            this.modifiedDateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modifiedDateToolStripMenuItem.Text = "Modified Date";
+            this.modifiedDateToolStripMenuItem.CheckedChanged += new System.EventHandler(this.modifiedDateToolStripMenuItem_CheckedChanged);
+            // 
+            // modelToolStripMenuItem
+            // 
+            this.modelToolStripMenuItem.CheckOnClick = true;
+            this.modelToolStripMenuItem.Name = "modelToolStripMenuItem";
+            this.modelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modelToolStripMenuItem.Text = "Model";
+            this.modelToolStripMenuItem.CheckedChanged += new System.EventHandler(this.modelToolStripMenuItem_CheckedChanged);
+            // 
+            // modelHashToolStripMenuItem
+            // 
+            this.modelHashToolStripMenuItem.CheckOnClick = true;
+            this.modelHashToolStripMenuItem.Name = "modelHashToolStripMenuItem";
+            this.modelHashToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modelHashToolStripMenuItem.Text = "Model Hash";
+            this.modelHashToolStripMenuItem.CheckedChanged += new System.EventHandler(this.modelHashToolStripMenuItem_CheckedChanged);
+            // 
+            // seedToolStripMenuItem
+            // 
+            this.seedToolStripMenuItem.CheckOnClick = true;
+            this.seedToolStripMenuItem.Name = "seedToolStripMenuItem";
+            this.seedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.seedToolStripMenuItem.Text = "Seed";
+            this.seedToolStripMenuItem.CheckedChanged += new System.EventHandler(this.seedToolStripMenuItem_CheckedChanged);
             // 
             // sizeToolStripMenuItem
             // 
@@ -323,7 +393,7 @@
             // btnCopyPrompt
             // 
             this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyPrompt.Location = new System.Drawing.Point(505, 5);
+            this.btnCopyPrompt.Location = new System.Drawing.Point(479, 5);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
             this.btnCopyPrompt.Size = new System.Drawing.Size(122, 23);
             this.btnCopyPrompt.TabIndex = 13;
@@ -334,7 +404,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(633, 5);
+            this.button1.Location = new System.Drawing.Point(607, 5);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(122, 23);
             this.button1.TabIndex = 14;
@@ -364,7 +434,7 @@
             this.panMain.Controls.Add(this.picbImageDisplay);
             this.panMain.Location = new System.Drawing.Point(4, 18);
             this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(877, 399);
+            this.panMain.Size = new System.Drawing.Size(851, 373);
             this.panMain.TabIndex = 16;
             this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
             // 
@@ -460,15 +530,16 @@
             this.splitContainer2.Panel2.Controls.Add(this.button1);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopy);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopyPrompt);
-            this.splitContainer2.Size = new System.Drawing.Size(884, 614);
-            this.splitContainer2.SplitterDistance = 420;
+            this.splitContainer2.Size = new System.Drawing.Size(858, 614);
+            this.splitContainer2.SplitterDistance = 394;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 17;
             // 
             // lblStatus
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStatus.Location = new System.Drawing.Point(505, 0);
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblStatus.Location = new System.Drawing.Point(479, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(376, 15);
             this.lblStatus.TabIndex = 18;
@@ -478,31 +549,13 @@
             // btnCopyImage
             // 
             this.btnCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyImage.Location = new System.Drawing.Point(377, 5);
+            this.btnCopyImage.Location = new System.Drawing.Point(351, 5);
             this.btnCopyImage.Name = "btnCopyImage";
             this.btnCopyImage.Size = new System.Drawing.Size(122, 23);
             this.btnCopyImage.TabIndex = 15;
             this.btnCopyImage.Text = "Copy Image";
             this.btnCopyImage.UseVisualStyleBackColor = true;
             this.btnCopyImage.Click += new System.EventHandler(this.btnCopyImage_Click);
-            // 
-            // imageListColumnsToolStripMenuItem
-            // 
-            this.imageListColumnsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createdDateToolStripMenuItem});
-            this.imageListColumnsToolStripMenuItem.Name = "imageListColumnsToolStripMenuItem";
-            this.imageListColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.imageListColumnsToolStripMenuItem.Text = "Image List Columns";
-            // 
-            // createdDateToolStripMenuItem
-            // 
-            this.createdDateToolStripMenuItem.Checked = true;
-            this.createdDateToolStripMenuItem.CheckOnClick = true;
-            this.createdDateToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.createdDateToolStripMenuItem.Name = "createdDateToolStripMenuItem";
-            this.createdDateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.createdDateToolStripMenuItem.Text = "Created Date";
-            this.createdDateToolStripMenuItem.CheckedChanged += new System.EventHandler(this.createdDateToolStripMenuItem_CheckedChanged);
             // 
             // frmMain
             // 
@@ -581,5 +634,10 @@
         private ToolStripMenuItem refreshToolStripMenuItem;
         private ToolStripMenuItem imageListColumnsToolStripMenuItem;
         private ToolStripMenuItem createdDateToolStripMenuItem;
+        private ToolStripMenuItem imageToolStripMenuItem;
+        private ToolStripMenuItem modifiedDateToolStripMenuItem;
+        private ToolStripMenuItem modelToolStripMenuItem;
+        private ToolStripMenuItem modelHashToolStripMenuItem;
+        private ToolStripMenuItem seedToolStripMenuItem;
     }
 }

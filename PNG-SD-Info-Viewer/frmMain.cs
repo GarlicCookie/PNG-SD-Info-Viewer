@@ -45,7 +45,13 @@ namespace PNG_SD_Info_Viewer
         int yPos;
 
         // Bools on whether or not columns are active
+        bool imageColumnActive = true;
+        bool filenameColumnActive = true;
         bool createDateColumnActive = true;
+        bool modifiedDateColumnActive = false;
+        bool modelNameColumnActive = false;
+        bool modelHashColumnActive = false;
+        bool seedColumnActive = false;
 
         // Launchpoint
         public frmMain()
@@ -185,28 +191,35 @@ namespace PNG_SD_Info_Viewer
             if (dgvMain.Visible == true)
             {
                 DataGridViewImageColumn iconColumn = new DataGridViewImageColumn();
-                DataGridViewTextBoxColumn txtColumn = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn filenameColumn = new DataGridViewTextBoxColumn();
                 DataGridViewTextBoxColumn createdColumn = new DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn modifiedColumn = new DataGridViewTextBoxColumn();
                 DataGridViewTextBoxColumn modelHashColumn = new DataGridViewTextBoxColumn();
                 DataGridViewTextBoxColumn modelNameColumn = new DataGridViewTextBoxColumn();
-                dgvMain.Columns.Add(iconColumn);
-                dgvMain.Columns.Add(txtColumn);
+                DataGridViewTextBoxColumn seedColumn = new DataGridViewTextBoxColumn();
+                if (imageColumnActive == true) { dgvMain.Columns.Add(iconColumn); }
+                if (filenameColumnActive == true) { dgvMain.Columns.Add(filenameColumn); }
                 if (createDateColumnActive == true) { dgvMain.Columns.Add(createdColumn); }
-                
-                dgvMain.Columns.Add(modelHashColumn);
-                dgvMain.Columns.Add(modelNameColumn);
+                if (modifiedDateColumnActive == true) { dgvMain.Columns.Add(modifiedColumn); }
+                if (modelHashColumnActive == true) { dgvMain.Columns.Add(modelHashColumn); }
+                if (modelNameColumnActive == true) { dgvMain.Columns.Add(modelNameColumn); }
+                if (seedColumnActive == true) { dgvMain.Columns.Add(seedColumn); }
                 iconColumn.Name = "Images";
                 iconColumn.HeaderText = "Images:";
                 iconColumn.ImageLayout = DataGridViewImageCellLayout.Normal;
                 iconColumn.Description = "Zoomed";
-                txtColumn.Name = "Filename:";
-                txtColumn.HeaderText = "Filename:";
+                filenameColumn.Name = "Filename:";
+                filenameColumn.HeaderText = "Filename:";
                 createdColumn.Name = "Created:";
                 createdColumn.HeaderText = "Created:";
+                modifiedColumn.Name = "Modified:";
+                modifiedColumn.HeaderText = "Modified:";
                 modelHashColumn.Name = "Model hash:";
                 modelHashColumn.HeaderText = "Model hash:";
                 modelNameColumn.Name = "Model:";
                 modelNameColumn.HeaderText = "Model:";
+                seedColumn.Name = "Seed:";
+                seedColumn.HeaderText = "Seed:";
             }
 
             // Get all the png files from the provided path and put into array
@@ -216,7 +229,7 @@ namespace PNG_SD_Info_Viewer
             // Populate items into the Listbox, and the ImageList which we'll use for the DGV, using each file
             foreach (FileInfo file in Files)
             {
-                // Add item to listbox
+                // Add item to listbox      ** TODO: Only do this if the listbox is visible?  Might be a slight optimization.
                 lstbFilelist.Items.Add(file.Name);
 
                 // Add filename to imgList/arList object, with the full path as a key.  Might use the keyname later to lookup an image.  Only do this if we are using a DGV to save CPU and memory!
@@ -240,8 +253,8 @@ namespace PNG_SD_Info_Viewer
                         badImage = true;
                     }
 
-                    // If we didn't set our image pathlength as bad, continue.
-                    if (badImage == false)
+                    // If we didn't set our image pathlength as bad, and if the image column is enabled, continue.
+                    if (badImage == false && imageColumnActive == true)
                     {
                         // Convert our image to a smaller bitmap, then add it to the ImageList
                         using (var tempImage = Image.FromFile(file.FullName))       //FromFile method has a path limit!
@@ -273,8 +286,13 @@ namespace PNG_SD_Info_Viewer
                             arList.Add(bmp);
                         }
                     }
+                    // Else, if image column is off, we still want to build the array we need so it is sized accordingly.  Just add the filename instead of the image.
+                    else if (imageColumnActive == false)
+                    {
+                        arList.Add(file.FullName);
+                    }
                     // If we do not have a good image because the filepath is too long, show error
-                    else
+                    else if (badImage == true)
                     {
                         MessageBox.Show(errorNotifier);
                     }
@@ -300,10 +318,16 @@ namespace PNG_SD_Info_Viewer
                     // Add a row and set its value to the image in first column, and filename in second
                     dgvMain.Rows.Add();
                     //dgvMain.Rows[j].Cells[0].Value = imgList.Images[j];
-                    dgvMain.Rows[j].Cells[cellCol].Value = arList[j];
-                    cellCol++;
-                    dgvMain.Rows[j].Cells[cellCol].Value = Files[j].Name;
-                    cellCol++;
+                    if (imageColumnActive == true)
+                    {
+                        dgvMain.Rows[j].Cells[cellCol].Value = arList[j];
+                        cellCol++;
+                    }
+                    if (filenameColumnActive == true)
+                    {
+                        dgvMain.Rows[j].Cells[cellCol].Value = Files[j].Name;
+                        cellCol++;
+                    }
 
                     // Add additional file metadata
                     // Dates (currently using created date only).  Get file info for created and modified dates and store into vars.
@@ -314,6 +338,11 @@ namespace PNG_SD_Info_Viewer
                     if (createDateColumnActive == true)
                     {
                         dgvMain.Rows[j].Cells[cellCol].Value = created;
+                        cellCol++;
+                    }
+                    if (modifiedDateColumnActive== true)
+                    {
+                        dgvMain.Rows[j].Cells[cellCol].Value = lastmodified;
                         cellCol++;
                     }
 
@@ -346,25 +375,47 @@ namespace PNG_SD_Info_Viewer
                                     // Loop through each split spot and pull out what we need
                                     foreach (string component in components)
                                     {
-                                        // If the string is at least 12 long, and starts this way, we found our column
-                                        if ((component.Length >= 12) && (component.Substring(0, 12) == "Model hash: "))
+                                        // Check if column is active
+                                        if (modelHashColumnActive == true)
                                         {
-                                            // Add to column
-                                            string modelHashTrim = component.Replace(",", "");
-                                            modelHashTrim = modelHashTrim.Replace("Model hash: ", "");
-                                            dgvMain.Rows[j].Cells[cellCol].Value = modelHashTrim;
-                                            cellCol++;
+                                            // If the string is at least 12 long, and starts this way, we found our column
+                                            if ((component.Length >= 12) && (component.Substring(0, 12) == "Model hash: "))
+                                            {
+                                                // Add to column
+                                                string modelHashTrim = component.Replace(",", "");
+                                                modelHashTrim = modelHashTrim.Replace("Model hash: ", "");
+                                                dgvMain.Rows[j].Cells[cellCol].Value = modelHashTrim;
+                                                cellCol++;
 
+                                            }
                                         }
-                                        // If the string is at least 12 long, and starts this way, we found our column
-                                        if ((component.Length >= 7) && (component.Substring(0, 7) == "Model: "))
+                                        // Check if column is active
+                                        if (modelNameColumnActive == true)
                                         {
-                                            // Add to column
-                                            string modelTrim = component.Replace(",", "");
-                                            modelTrim = modelTrim.Replace("Model: ", "");
-                                            dgvMain.Rows[j].Cells[cellCol].Value = modelTrim;
-                                            cellCol++;
+                                            // If the string is at least 12 long, and starts this way, we found our column
+                                            if ((component.Length >= 7) && (component.Substring(0, 7) == "Model: "))
+                                            {
+                                                // Add to column
+                                                string modelTrim = component.Replace(",", "");
+                                                modelTrim = modelTrim.Replace("Model: ", "");
+                                                dgvMain.Rows[j].Cells[cellCol].Value = modelTrim;
+                                                cellCol++;
 
+                                            }
+                                        }
+                                        // Check if column is active
+                                        if (seedColumnActive == true)
+                                        {
+                                            // If the string is at least 12 long, and starts this way, we found our column
+                                            if ((component.Length >= 6) && (component.Substring(0, 6) == "Seed: "))
+                                            {
+                                                // Add to column
+                                                string seedTrim = component.Replace(",", "");
+                                                seedTrim = seedTrim.Replace("Seed: ", "");
+                                                dgvMain.Rows[j].Cells[cellCol].Value = seedTrim;
+                                                cellCol++;
+
+                                            }
                                         }
                                     }
                                 }
@@ -428,10 +479,18 @@ namespace PNG_SD_Info_Viewer
             // Pull out any selected rows. There should only be one since we limit it to single row selection.  TODO: Replace the foreach, we don't need to iterate.
             foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
             {
-                // If the value in the second column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
-                if (dgvMain[1, selectedRow.Index].Value != null)
+                // If the value in the filename column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
+                var dataGridViewColumn = dgvMain.Columns["Filename:"];
+                int filenameIndex=0;
+                if (dataGridViewColumn != null)
                 {
-                    selectedImage = dgvMain[1, selectedRow.Index].Value.ToString()!;
+                    filenameIndex = dgvMain.Columns.IndexOf(dataGridViewColumn);
+                }
+
+                if (dgvMain[filenameIndex, selectedRow.Index].Value != null)
+                {
+                    
+                    selectedImage = dgvMain[filenameIndex, selectedRow.Index].Value.ToString()!;
                 }
             }
 
@@ -896,7 +955,7 @@ namespace PNG_SD_Info_Viewer
         private void labelFader_Tick(object sender, EventArgs e)
         {
             // Set the speed
-            int fadingSpeed = 30;
+            int fadingSpeed = 20;
 
             // Setup the color RGB to move from black to background color over time
             lblStatus.ForeColor = Color.FromArgb(lblStatus.ForeColor.R + fadingSpeed, lblStatus.ForeColor.G + fadingSpeed, lblStatus.ForeColor.B + fadingSpeed);
@@ -983,6 +1042,11 @@ namespace PNG_SD_Info_Viewer
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            refreshFolder();
+        }
+
+        private void refreshFolder()
+        {
             // Go find images if the path is set
             if (openPath != "")
             {
@@ -995,6 +1059,7 @@ namespace PNG_SD_Info_Viewer
 
         private void createdDateToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
+            // Toggle the column on or off by setting the appropriate bool based on the check value
             if (createdDateToolStripMenuItem.Checked == true)
             {
                 createDateColumnActive = true;
@@ -1003,6 +1068,78 @@ namespace PNG_SD_Info_Viewer
             {
                 createDateColumnActive = false;
             }
+            refreshFolder();
+        }
+
+        private void imageToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle the column on or off by setting the appropriate bool based on the check value
+            if (imageToolStripMenuItem.Checked == true)
+            {
+                imageColumnActive = true;
+            }
+            if (imageToolStripMenuItem.Checked == false)
+            {
+                imageColumnActive = false;
+            }
+            refreshFolder();
+        }
+
+
+        private void modifiedDateToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle the column on or off by setting the appropriate bool based on the check value
+            if (modifiedDateToolStripMenuItem.Checked == true)
+            {
+                modifiedDateColumnActive = true;
+            }
+            if (modifiedDateToolStripMenuItem.Checked == false)
+            {
+                modifiedDateColumnActive = false;
+            }
+            refreshFolder();
+        }
+
+        private void modelToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle the column on or off by setting the appropriate bool based on the check value
+            if (modelToolStripMenuItem.Checked == true)
+            {
+                modelNameColumnActive = true;
+            }
+            if (modelToolStripMenuItem.Checked == false)
+            {
+                modelNameColumnActive = false;
+            }
+            refreshFolder();
+        }
+
+        private void modelHashToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle the column on or off by setting the appropriate bool based on the check value
+            if (modelHashToolStripMenuItem.Checked == true)
+            {
+                modelHashColumnActive = true;
+            }
+            if (modelHashToolStripMenuItem.Checked == false)
+            {
+                modelHashColumnActive = false;
+            }
+            refreshFolder();
+        }
+
+        private void seedToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            // Toggle the column on or off by setting the appropriate bool based on the check value
+            if (seedToolStripMenuItem.Checked == true)
+            {
+                seedColumnActive = true;
+            }
+            if (seedToolStripMenuItem.Checked == false)
+            {
+                seedColumnActive = false;
+            }
+            refreshFolder();
         }
     }
 
