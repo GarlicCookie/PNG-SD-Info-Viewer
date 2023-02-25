@@ -522,28 +522,7 @@ namespace PNG_SD_Info_Viewer
         }
 
 
-        // Call this when a new row is selected in our DataGridView - TODO:  Delete this*************
-        private void dgvMain_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Clear the stuffs
-            txtParameters.Text = "";
-
-            // Set a string for the selected image filename
-            string selectedImage = "";
-            
-            // Pull out any selected rows. There should only be one since we limit it to single row selection.  TODO: Replace the foreach, we don't need to iterate.
-            foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
-            {
-                // If the value in the second column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
-                if (dgvMain[1, selectedRow.Index].Value.ToString() != null)
-                {
-                    selectedImage = dgvMain[1, selectedRow.Index].Value.ToString()!;
-                }
-            }
-
-            // Update our picturebox and parameters boxes!
-            updateBoxes(selectedImage);
-        }
+        
 
         private void updateBoxes(string selectedImage)
         {
@@ -798,11 +777,22 @@ namespace PNG_SD_Info_Viewer
                 // Pull out any selected rows. There should only be one since we limit it to single row selection.  TODO: Replace the foreach, we don't need to iterate.
                 foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
                 {
-                    // If the value in the second column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
-                    if (dgvMain[1, selectedRow.Index].Value.ToString() != null)
+                    // If the value in the filename column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
+                    var dataGridViewColumn = dgvMain.Columns["Filename:"];
+                    int filenameIndex = 0;
+                    if (dataGridViewColumn != null)
                     {
-                        selectedImage = dgvMain[1, selectedRow.Index].Value.ToString()!;
+                        filenameIndex = dgvMain.Columns.IndexOf(dataGridViewColumn);
                     }
+
+                    if (dgvMain[filenameIndex, selectedRow.Index].Value != null)
+                    {
+
+                        selectedImage = dgvMain[filenameIndex, selectedRow.Index].Value.ToString()!;
+                    }
+
+
+
                 }
             }
 
