@@ -1,13 +1,18 @@
 using MetadataExtractor;
 using MetadataExtractor.Formats.FileSystem;
+using Microsoft.Win32;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Data.Common;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using static PNG_SD_Info_Viewer.frmMain;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
@@ -53,6 +58,9 @@ namespace PNG_SD_Info_Viewer
         bool modelHashColumnActive = false;
         bool seedColumnActive = false;
 
+        // View mode
+        string UIviewMode = "lightmode";
+
         // Launchpoint
         public frmMain()
         {
@@ -69,11 +77,22 @@ namespace PNG_SD_Info_Viewer
             // Load saved settings
             loadSettings();
 
+            // Set the view mode
+            if (UIviewMode == "darkmode")
+            {
+                darkMode();
+            }
+            else
+            {
+                lightMode();
+            }
+
             // Set menu checkmarks on the menubar accordingly.
             setMenuChecks();
 
             // Fire up the mousewheel detection on the picturebox
             picbImageDisplay.MouseWheel += PicbImageDisplay_MouseWheel;
+
         }
 
         // Mousewheel detection
@@ -958,7 +977,15 @@ namespace PNG_SD_Info_Viewer
         // Update the lblStatus label with passed text, and fade it out
         private void updateStatusBox(string s)
         {
-            lblStatus.ForeColor = Color.Black;
+            if (UIviewMode == "lightmode")
+            {
+                lblStatus.ForeColor = Color.Black;
+            }
+            else
+            {
+                lblStatus.ForeColor = SystemColors.ControlText;
+            }
+            
             lblStatus.Text = s;
             labelFader.Start();
         }
@@ -970,14 +997,31 @@ namespace PNG_SD_Info_Viewer
             // Set the speed
             int fadingSpeed = 20;
 
-            // Setup the color RGB to move from black to background color over time
-            lblStatus.ForeColor = Color.FromArgb(lblStatus.ForeColor.R + fadingSpeed, lblStatus.ForeColor.G + fadingSpeed, lblStatus.ForeColor.B + fadingSpeed);
-
-            // Stop when the color reaches where it needs to go
-            if (lblStatus.ForeColor.R >= this.BackColor.R)
+            if (UIviewMode == "lightmode")
             {
-                labelFader.Stop();
-                lblStatus.ForeColor = this.BackColor;
+                // Setup the color RGB to move from black to background color over time
+                lblStatus.ForeColor = Color.FromArgb(lblStatus.ForeColor.R + fadingSpeed, lblStatus.ForeColor.G + fadingSpeed, lblStatus.ForeColor.B + fadingSpeed);
+
+                // Stop when the color reaches where it needs to go
+                if (lblStatus.ForeColor.R >= this.BackColor.R)
+                {
+                    labelFader.Stop();
+                    lblStatus.ForeColor = this.BackColor;
+                    lblStatus.Text = "";
+                }
+            }
+            else
+            {
+                // Setup the color RGB to move from black to background color over time
+                lblStatus.ForeColor = Color.FromArgb(lblStatus.ForeColor.R + fadingSpeed, lblStatus.ForeColor.G + fadingSpeed, lblStatus.ForeColor.B + fadingSpeed);
+
+                // Stop when the color reaches where it needs to go
+                if (lblStatus.ForeColor.R >= 200)
+                {
+                    labelFader.Stop();
+                    lblStatus.ForeColor = this.BackColor;
+                    lblStatus.Text = "";
+                }
             }
         }
 
@@ -1174,11 +1218,11 @@ namespace PNG_SD_Info_Viewer
             {
                 viewMode = "detailed";
             }
-            
+
             string[] lines =
             {
-                "PNG-SD-Info-Viewer Settings File.  Do not Modify!  Deleting this file will reset your settings.", 
-                "------------------", 
+                "PNG-SD-Info-Viewer Settings File.  Do not Modify!  Deleting this file will reset your settings.",
+                "------------------",
                 imageColumnActive.ToString(),
                 filenameColumnActive.ToString(),
                 createDateColumnActive.ToString(),
@@ -1188,7 +1232,8 @@ namespace PNG_SD_Info_Viewer
                 seedColumnActive.ToString(),
                 viewMode,
                 hSize.ToString(),
-                wSize.ToString()
+                wSize.ToString(),
+                UIviewMode
             };
             try
             {
@@ -1214,7 +1259,7 @@ namespace PNG_SD_Info_Viewer
                 // Read file
                 string[] lines = System.IO.File.ReadAllLines(@"PNG-SD-Info-Viewer.cfg");
 
-                if (lines.Length != 12)
+                if (lines.Length != 13)
                 {
                     // unexpected cfg length
                     MessageBox.Show("Your config file is an unexpected length.  Loading default.");
@@ -1231,6 +1276,7 @@ namespace PNG_SD_Info_Viewer
                 string viewMode = lines[9];
                 hSize = int.Parse(lines[10]);
                 wSize = int.Parse(lines[11]);
+                UIviewMode = lines[12];
 
                 if (viewMode == "detailed")
                 {
@@ -1255,6 +1301,361 @@ namespace PNG_SD_Info_Viewer
         private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveSettings();
+        }
+
+      
+
+        public void SetWallpaper(Style style, bool clearWallpaper)
+        {
+            // Ensure we have an image to use, or that we are clearing it to blank
+            if (picbImageDisplay.Image == null && clearWallpaper == false)
+            {
+                return;
+            }
+
+            // Setup variables for system API call
+            const int SPI_SETDESKWALLPAPER = 20;
+            const int SPIF_UPDATEINIFILE = 0x01;
+            const int SPIF_SENDWININICHANGE = 0x02;
+            [DllImport("user32.dll", CharSet = CharSet.Auto)]
+            static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+
+            // Set path to image
+            // Path via listbox
+            string selectedImage = lstbFilelist.GetItemText(lstbFilelist.SelectedItem);
+
+            // Path via DGV if seen
+            if (dgvMain.Visible == true)
+            {
+                foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
+                {
+                    // If the value in the filename column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
+                    var dataGridViewColumn = dgvMain.Columns["Filename:"];
+                    int filenameIndex = 0;
+                    if (dataGridViewColumn != null)
+                    {
+                        filenameIndex = dgvMain.Columns.IndexOf(dataGridViewColumn);
+                    }
+
+                    if (dgvMain[filenameIndex, selectedRow.Index].Value != null)
+                    {
+                        selectedImage = dgvMain[filenameIndex, selectedRow.Index].Value.ToString()!;
+                    }
+
+                }
+            }
+
+            string tempPath = openPath + "\\" + selectedImage;
+
+            
+
+
+
+            // Check for clear
+            if (clearWallpaper == true)
+            {
+                tempPath = "";
+            }
+
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true)!;
+            if (style == Style.Stretched)
+            {
+                key.SetValue(@"WallpaperStyle", 2.ToString());
+                key.SetValue(@"TileWallpaper", 0.ToString());
+            }
+
+            if (style == Style.Centered)
+            {
+                key.SetValue(@"WallpaperStyle", 1.ToString());
+                key.SetValue(@"TileWallpaper", 0.ToString());
+            }
+
+            if (style == Style.Tiled)
+            {
+                key.SetValue(@"WallpaperStyle", 1.ToString());
+                key.SetValue(@"TileWallpaper", 1.ToString());
+            }
+
+            if (style == Style.Fill)
+            {
+                key.SetValue(@"WallpaperStyle", 10.ToString());
+                key.SetValue(@"TileWallpaper", 0.ToString());
+            }
+
+            if (style == Style.Fit)
+            {
+                key.SetValue(@"WallpaperStyle", 6.ToString());
+                key.SetValue(@"TileWallpaper", 0.ToString());
+            }
+
+            if (style == Style.Span)
+            {
+                key.SetValue(@"WallpaperStyle", 22.ToString());
+                key.SetValue(@"TileWallpaper", 0.ToString());
+            }
+
+            SystemParametersInfo(SPI_SETDESKWALLPAPER,0,tempPath,SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
+
+
+            updateStatusBox("Setting Wallpaper");
+        }
+
+        public enum Style : int
+        {
+            Tiled,
+            Centered,
+            Stretched,
+            Span,
+            Fill,
+            Fit
+        }
+
+        private void centeredToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetWallpaper(Style.Centered, false);
+        }
+
+        private void stretchedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetWallpaper(Style.Stretched,false);
+        }
+
+        private void tiledToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetWallpaper(Style.Tiled, false);
+        }
+
+        private void clearWallpaperToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetWallpaper(Style.Centered, true);
+        }
+
+        private void fillToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetWallpaper(Style.Fill, false);
+        }
+
+        private void fitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetWallpaper(Style.Fit, false);
+        }
+
+        private void spanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetWallpaper(Style.Span, false);
+        }
+
+        private void lightMode()
+        {
+            
+            
+            // Form
+            this.BackColor = SystemColors.Control;
+
+            // Panels
+            panMain.BackColor = SystemColors.Control;
+            
+            splitContainer1.BackColor = SystemColors.ControlLight;
+            splitContainer1.Panel1.BackColor = SystemColors.Control;
+            splitContainer1.Panel2.BackColor = SystemColors.Control;
+
+
+            splitContainer2.BackColor = SystemColors.ControlLight;
+            splitContainer2.Panel1.BackColor = SystemColors.Control;
+            splitContainer2.Panel2.BackColor = SystemColors.Control;
+
+            // Menu
+            menuStrip1.BackColor = SystemColors.ControlLight;
+            menuStrip1.ForeColor = SystemColors.ControlText;
+
+            // Buttons
+            btnCopy.FlatStyle = FlatStyle.Standard;
+            btnCopy.BackColor = SystemColors.Control; 
+            btnCopy.ForeColor = SystemColors.ControlText;
+
+            btnCopyImage.FlatStyle = FlatStyle.Standard;
+            btnCopyImage.BackColor = SystemColors.Control;
+            btnCopyImage.ForeColor = SystemColors.ControlText;
+
+            btnCopyPrompt.FlatStyle = FlatStyle.Standard;
+            btnCopyPrompt.BackColor = SystemColors.Control;
+            btnCopyPrompt.ForeColor = SystemColors.ControlText;
+
+            btnSelectFolder.FlatStyle = FlatStyle.Standard;
+            btnSelectFolder.BackColor = SystemColors.Control;
+            btnSelectFolder.ForeColor = SystemColors.ControlText;
+
+            button1.FlatStyle = FlatStyle.Standard;
+            button1.BackColor = SystemColors.Control;
+            button1.ForeColor = SystemColors.ControlText;
+
+
+            // Labels
+            lblFilename.BackColor = SystemColors.Control;
+            lblFilename.ForeColor = SystemColors.ControlText;
+
+            lblFilesInFolder.BackColor = SystemColors.Control;
+            lblFilesInFolder.ForeColor = SystemColors.ControlText;
+
+            lblFolderSelected.BackColor = SystemColors.Control;
+            lblFolderSelected.ForeColor = SystemColors.ControlText;
+
+            lblImage.BackColor = SystemColors.Control;
+            lblImage.ForeColor = SystemColors.ControlText;
+
+            lblLoading.BackColor = SystemColors.Control;
+            lblLoading.ForeColor = SystemColors.ControlText;
+
+            lblParameters.BackColor = SystemColors.Control;
+            lblParameters.ForeColor = SystemColors.ControlText;
+
+            lblStatus.BackColor = SystemColors.Control;
+            lblStatus.ForeColor = SystemColors.ControlText;
+
+            // Tag box
+            chkTag.BackColor = SystemColors.Control;
+            chkTag.ForeColor = SystemColors.ControlText;
+            chkTag.FlatStyle = FlatStyle.Standard;
+
+            // Lists
+            lstbFilelist.BackColor = SystemColors.Window;
+            lstbFilelist.ForeColor = SystemColors.WindowText;
+            lstbFilelist.BorderStyle = BorderStyle.Fixed3D;
+            
+
+            dgvMain.BackColor = SystemColors.Control;
+            dgvMain.ForeColor = SystemColors.ControlText;
+            dgvMain.BackgroundColor = SystemColors.ControlDark;
+
+            
+            dgvMain.DefaultCellStyle.ForeColor = SystemColors.ControlText;
+            dgvMain.DefaultCellStyle.BackColor = SystemColors.Window;
+            dgvMain.EnableHeadersVisualStyles = true;
+
+            dgvMain.DefaultCellStyle.SelectionBackColor = Color.Gray;
+            
+
+            // Txts
+            txtParameters.BackColor = SystemColors.Window;
+            txtParameters.ForeColor = SystemColors.WindowText;
+            txtParameters.BorderStyle = BorderStyle.Fixed3D;
+
+
+            UIviewMode = "lightmode";
+        }
+
+        private void darkMode()
+        {
+            // Form
+            this.BackColor = Color.Black;
+            
+            // Panels
+            panMain.BackColor = Color.Black;
+
+            Color bars = Color.FromArgb(30, 30, 30);
+
+            splitContainer1.BackColor = bars;
+            splitContainer1.Panel1.BackColor = Color.Black;
+            splitContainer1.Panel2.BackColor = Color.Black;
+
+
+            splitContainer2.BackColor = Color.Black;
+            splitContainer2.Panel1.BackColor = Color.Black;
+            splitContainer2.Panel2.BackColor = Color.Black;
+
+            // Menu
+            menuStrip1.BackColor = Color.Black;
+            menuStrip1.ForeColor = Color.DarkGray;
+            
+
+            // Buttons
+            btnCopy.FlatStyle = FlatStyle.Flat;
+            btnCopy.FlatAppearance.BorderColor = Color.DimGray;
+            btnCopy.BackColor = Color.DimGray;
+            btnCopy.ForeColor = Color.LightGray;
+
+            btnCopyImage.FlatStyle = FlatStyle.Flat;
+            btnCopyImage.FlatAppearance.BorderColor = Color.DimGray;
+            btnCopyImage.BackColor = Color.DimGray;
+            btnCopyImage.ForeColor = Color.LightGray;
+
+            btnCopyPrompt.FlatStyle = FlatStyle.Flat;
+            btnCopyPrompt.FlatAppearance.BorderColor = Color.DimGray;
+            btnCopyPrompt.BackColor = Color.DimGray;
+            btnCopyPrompt.ForeColor = Color.LightGray;
+
+            btnSelectFolder.FlatStyle = FlatStyle.Flat;
+            btnSelectFolder.FlatAppearance.BorderColor = Color.DimGray;
+            btnSelectFolder.BackColor = Color.DimGray;
+            btnSelectFolder.ForeColor = Color.LightGray;
+
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.FlatAppearance.BorderColor = Color.DimGray;
+            button1.BackColor = Color.DimGray;
+            button1.ForeColor = Color.LightGray;
+
+
+            // Labels
+            lblFilename.BackColor = Color.Black;
+            lblFilename.ForeColor = Color.LightGray;
+
+            lblFilesInFolder.BackColor = Color.Black;
+            lblFilesInFolder.ForeColor = Color.LightGray;
+
+            lblFolderSelected.BackColor = Color.Black;
+            lblFolderSelected.ForeColor = Color.LightGray;
+
+            lblImage.BackColor = Color.Black;
+            lblImage.ForeColor = Color.LightGray;
+
+            lblLoading.BackColor = Color.Black;
+            lblLoading.ForeColor = Color.LightGray;
+
+            lblParameters.BackColor = Color.Black;
+            lblParameters.ForeColor = Color.LightGray;
+
+            lblStatus.BackColor = Color.Black;
+            lblStatus.ForeColor = Color.LightGray;
+
+            // Tag box
+            chkTag.BackColor = Color.Black;
+            chkTag.ForeColor = Color.LightGray;
+            chkTag.FlatStyle= FlatStyle.Flat;
+            
+            // Lists
+            lstbFilelist.BackColor = Color.Black;
+            lstbFilelist.ForeColor = Color.Gray;
+            lstbFilelist.BorderStyle= BorderStyle.None;
+            
+
+            dgvMain.BackColor = Color.Black;
+            dgvMain.ForeColor = Color.LightGray;
+            dgvMain.BackgroundColor= Color.Black;
+
+            dgvMain.ColumnHeadersDefaultCellStyle.ForeColor = Color.LightGray;
+            dgvMain.ColumnHeadersDefaultCellStyle.BackColor = Color.DimGray;
+            dgvMain.EnableHeadersVisualStyles = false;
+            dgvMain.DefaultCellStyle.ForeColor= Color.DimGray;
+            dgvMain.DefaultCellStyle.BackColor = Color.Black;
+
+
+            // Txts
+            txtParameters.BackColor = Color.Black;
+            txtParameters.ForeColor = Color.Gray;
+            txtParameters.BorderStyle= BorderStyle.FixedSingle;
+
+            UIviewMode = "darkmode";
+
+        }
+
+        private void lightModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lightMode();
+        }
+
+        private void darkModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            darkMode();
         }
     }
 }
