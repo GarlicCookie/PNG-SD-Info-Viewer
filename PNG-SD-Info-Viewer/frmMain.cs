@@ -431,8 +431,17 @@ namespace PNG_SD_Info_Viewer
                                         // Check if column is active
                                         if (modelNameColumnActive == true)
                                         {
-                                            // If the string is at least 12 long, and starts this way, we found our column
-                                            if ((component.Length >= 7) && (component.Substring(0, 7) == "Model: "))
+                                            bool controlnetModel = false;
+                                            // Check if this is a controlnet model.  If so, skip it.
+                                            // If the string is at least 14 long, and starts this way, we found our column
+                                            if ((component.Length >= 14) && (component.Substring(0, 14) == "Model: control"))
+                                            {
+                                                controlnetModel = true;
+
+                                            }
+
+                                            // If the string is at least 7 long, and starts this way, we found our column
+                                            if ((component.Length >= 7) && (component.Substring(0, 7) == "Model: ") && (controlnetModel == false))
                                             {
                                                 // Add to column
                                                 string modelTrim = component.Replace(",", "");
