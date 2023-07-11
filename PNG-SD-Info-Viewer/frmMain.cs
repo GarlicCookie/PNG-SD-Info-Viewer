@@ -1,5 +1,6 @@
 using MetadataExtractor;
 using MetadataExtractor.Formats.FileSystem;
+using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using System;
 using System.Collections;
@@ -29,10 +30,10 @@ namespace PNG_SD_Info_Viewer
 
         // Array of images
         ArrayList arList = new ArrayList();
-        
+
         // A string to hold the open path
         string openPath = "";
-        
+
         // Default size of the image previews in image list mode
         int wSize = 64;
         int hSize = 64;
@@ -42,10 +43,10 @@ namespace PNG_SD_Info_Viewer
 
         // Bool to check if mouse is pressed and moving
         bool isMouseDragging;
-        
+
         // Mouse x pos when draggins
         int xPos;
-        
+
         // Mouse y pos when dragging
         int yPos;
 
@@ -64,6 +65,7 @@ namespace PNG_SD_Info_Viewer
         // Launchpoint
         public frmMain()
         {
+            AllowDrop = true; //////////////////// added toadcode
             // Setup event handler for timer, used for text fade effect
             labelFader.Tick += new EventHandler(labelFader_Tick!);
 
@@ -95,10 +97,101 @@ namespace PNG_SD_Info_Viewer
 
         }
 
+
+        // this is my custom toad code toadcode /////////////////////////////////////////////////////
+        private void frmMain_Load_1(object sender, EventArgs e)
+        {
+            picbImageDisplay.AllowDrop = true;
+            picbImageDisplay.DragEnter += new DragEventHandler(frmMain_DragEnter);
+            picbImageDisplay.DragDrop += new DragEventHandler(frmMain_DragDrop);
+            this.AllowDrop = true;
+            this.DragEnter += new DragEventHandler(frmMain_DragEnter);
+            this.DragDrop += new DragEventHandler(frmMain_DragDrop);
+        }
+
+        private void frmMain_DragEnter(object? sender, DragEventArgs e)
+        {
+            //lblFolderSelected.Text = openPath;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        private void frmMain_DragDrop(object? sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string path = files[0];
+
+                // Check if the path is a directory or a file
+                if (System.IO.Directory.Exists(path))
+                {
+                    // The path is a directory
+                    openPath = path;
+                }
+                else if (File.Exists(path))
+                {
+                    // The path is a file, so extract the directory path from it
+                    openPath = Path.GetDirectoryName(path);
+                }
+
+                // Show the selected path in the UI
+                lblFolderSelected.Text = openPath;
+
+                // Go find images!
+                findImagesInDirectory(openPath);
+
+                // Load the image into the picturebox
+                picbImageDisplay.ImageLocation = files[0];
+
+                // Select the filename in the DataGridView
+                string filename = Path.GetFileName(files[0]);
+
+                lblFilename.Text = filename;
+                //updateTagBox(filename);
+
+                string selectedImage = lblFilename.Text;
+                IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(openPath + "\\" + selectedImage);
+                foreach (var directory in directories)
+                    foreach (var tag in directory.Tags)
+                    {
+                        if (tag.Name == "Textual Data")
+                        {
+                            // Old style of EXIF pull.  Left for reference.
+                            //textBox1.Text += ($"{directory.Name} \r\n - {tag.Name} = {tag.Description}");
+                            //textBox1.Text += "\n";
+
+                            // Parse text
+                            string parsed = ($"{tag.Description}").Replace("Negative prompt:", "\r\n\r\nNegative Prompt:");
+                            parsed = parsed.Replace("Steps:", "\r\n\r\nSteps:");
+                            parsed = parsed.Replace("Sampler:", "\r\nSampler:");
+                            parsed = parsed.Replace("CFG scale:", "\r\nCFG scale:");
+                            parsed = parsed.Replace("Seed:", "\r\nSeed:");
+                            parsed = parsed.Replace("Size:", "\r\nSize:");
+                            parsed = parsed.Replace("Model hash:", "\r\nModel hash:");
+                            parsed = parsed.Replace("Model:", "\r\nModel:");
+                            parsed = parsed.Replace("Denoising strength:", "\r\nDenoising strength:");
+
+                            // Update the textbox with the parsed string
+                            txtParameters.Text += parsed;
+                        }
+                    }
+
+
+            }
+        }
+
+
+
+
+
+
+
+
+
         // Mousewheel detection
         private void PicbImageDisplay_MouseWheel(object? sender, MouseEventArgs e)
         {
-            
+
             if (e.Delta < 0)
             {
                 // Go to next file
@@ -120,14 +213,14 @@ namespace PNG_SD_Info_Viewer
                     DataGridViewRow r = dgvMain.SelectedRows[0];
                     int dgvCurrentRowIndex = r.Index;
                     int dgvLength = dgvMain.RowCount;
-                    
+
                     // Make sure we aren't at the end already
-                    if (dgvCurrentRowIndex != dgvLength-1) 
+                    if (dgvCurrentRowIndex != dgvLength - 1)
                     {
                         // Advance
                         dgvMain[1, dgvCurrentRowIndex + 1].Selected = true;
                     }
-                    
+
                     // Cleanup
                     r.Dispose();
                 }
@@ -153,7 +246,7 @@ namespace PNG_SD_Info_Viewer
                     DataGridViewRow r = dgvMain.SelectedRows[0];
                     int dgvCurrentRowIndex = r.Index;
                     int dgvLength = dgvMain.RowCount;
-                    
+
                     // Verify not already at the beginning, or nothing selected
                     if (dgvCurrentRowIndex != 0 && dgvCurrentRowIndex != -1)
                     {
@@ -209,8 +302,8 @@ namespace PNG_SD_Info_Viewer
 
             // Set the side of the images in the imagelist (no longer used)
             //imgList.ImageSize = new Size(wSize, hSize);
-            
-            
+
+
 
             // Setup datagridview columns if DGV is active
             if (dgvMain.Visible == true)
@@ -277,13 +370,13 @@ namespace PNG_SD_Info_Viewer
 
                     // Setup our string to display is it's too long
                     string errorNotifier = "Certain images were not loaded because their filepath and filename are too long for your OS:\r\n";
-                    
+
                     // Check if the full path is over 256 characters
                     if (file.FullName.Length > 256)
                     {
                         // Add the filepath and filename to the error message
                         errorNotifier += file.FullName + "\r\n";
-                        
+
                         // Set that this iteration through the foreach is no good
                         badImage = true;
                     }
@@ -308,7 +401,7 @@ namespace PNG_SD_Info_Viewer
                                 int hDiff = tempImage.Height / hSize;
                                 wSize2 = tempImage.Width / hDiff;
                             }
-                            
+
                             // Create new image in memory to store
                             Bitmap bmp = new Bitmap(wSize2, hSize2);
                             using (Graphics g = Graphics.FromImage(bmp))
@@ -341,7 +434,7 @@ namespace PNG_SD_Info_Viewer
 
                     // Commented out the original add line to use the above more memory-efficient method.  Keeping here in case we need to revert.
                     //imgList.Images.Add(file.FullName, Image.FromFile(file.FullName));
-                    
+
                 }
             }
 
@@ -353,7 +446,7 @@ namespace PNG_SD_Info_Viewer
                 {
                     // Index for cell column.  TODO:  Use this to toggle columns on/off
                     int cellCol = 0;
-                    
+
                     // Add a row and set its value to the image in first column, and filename in second
                     dgvMain.Rows.Add();
                     //dgvMain.Rows[j].Cells[0].Value = imgList.Images[j];
@@ -379,7 +472,7 @@ namespace PNG_SD_Info_Viewer
                         dgvMain.Rows[j].Cells[cellCol].Value = created;
                         cellCol++;
                     }
-                    if (modifiedDateColumnActive== true)
+                    if (modifiedDateColumnActive == true)
                     {
                         dgvMain.Rows[j].Cells[cellCol].Value = lastmodified;
                         cellCol++;
@@ -405,8 +498,8 @@ namespace PNG_SD_Info_Viewer
 
                                 // Grab the full prompt text, leave if it is empty
                                 string s = parsed;
-                                if (s != "") 
-                                { 
+                                if (s != "")
+                                {
 
                                     // Split the text at line breaks
                                     string[] components = s.Split("\r\n");
@@ -488,7 +581,7 @@ namespace PNG_SD_Info_Viewer
                         dgvMain.Columns[0].Width = wSize;
                     }
                 }
-                
+
                 // All items added, now select nothing.  Otherwise, DGV selects first row by default but doesn't update.
                 dgvMain.ClearSelection();
 
@@ -510,7 +603,7 @@ namespace PNG_SD_Info_Viewer
         {
             // Clear the stuffs
             txtParameters.Text = "";
-            
+
             // Get the filename selected in the listbox
             string selectedImage = lstbFilelist.GetItemText(lstbFilelist.SelectedItem);
 
@@ -532,7 +625,7 @@ namespace PNG_SD_Info_Viewer
             {
                 // If the value in the filename column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
                 var dataGridViewColumn = dgvMain.Columns["Filename:"];
-                int filenameIndex=0;
+                int filenameIndex = 0;
                 if (dataGridViewColumn != null)
                 {
                     filenameIndex = dgvMain.Columns.IndexOf(dataGridViewColumn);
@@ -540,7 +633,7 @@ namespace PNG_SD_Info_Viewer
 
                 if (dgvMain[filenameIndex, selectedRow.Index].Value != null)
                 {
-                    
+
                     selectedImage = dgvMain[filenameIndex, selectedRow.Index].Value.ToString()!;
                 }
             }
@@ -550,7 +643,7 @@ namespace PNG_SD_Info_Viewer
         }
 
 
-        
+
 
         private void updateBoxes(string selectedImage)
         {
@@ -559,7 +652,7 @@ namespace PNG_SD_Info_Viewer
             {
                 return;
             }
-            
+
             // Set the picturebox to display the image based on the stored path plus the selected filename
             picbImageDisplay.ImageLocation = openPath + "\\" + selectedImage;
 
@@ -573,7 +666,20 @@ namespace PNG_SD_Info_Viewer
             updateTagBox(selectedImage);
 
             // Grab the EXIF data and show it in the parameters textbox
+            //IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(openPath + "\\" + selectedImage);
+
+            //IEnumerable<MetadataExtractor.Directory> directories;
+            //try
+            //{
+            //    directories = ImageMetadataReader.ReadMetadata(openPath + "\\" + selectedImage);
+            //}
+            //catch (System.IO.IOException)
+            //{
+            //    directories = ImageMetadataReader.ReadMetadata(selectedImage);
+            //}
+
             IEnumerable<MetadataExtractor.Directory> directories = ImageMetadataReader.ReadMetadata(openPath + "\\" + selectedImage);
+
             foreach (var directory in directories)
                 foreach (var tag in directory.Tags)
                 {
@@ -607,7 +713,7 @@ namespace PNG_SD_Info_Viewer
             // Hide DataGridView and Show Listbox
             dgvMain.Hide();
             lstbFilelist.Show();
-            
+
             // Populate the Listbox if a path is selected
             if (openPath != "")
             {
@@ -671,7 +777,7 @@ namespace PNG_SD_Info_Viewer
         private void pxToolStripMenuItem_Click(object sender, EventArgs e)
         {
             hSize = 64;
-            wSize= 64;
+            wSize = 64;
             if (openPath != "")
             {
                 findImagesInDirectory(openPath);
@@ -725,12 +831,12 @@ namespace PNG_SD_Info_Viewer
 
             // Split the text at line breaks
             string[] components = s.Split("\r\n");
-            
+
             // Loop through each split spot and pull out what we need
             foreach (string component in components)
             {
                 // If the string is at least 12 long, and starts this way, we found our prompt
-                if ((component.Length >=12) && (component.Substring(0, 12) == "parameters: "))
+                if ((component.Length >= 12) && (component.Substring(0, 12) == "parameters: "))
                 {
                     // Copies to clipboard
                     Clipboard.SetText(component);
@@ -775,7 +881,7 @@ namespace PNG_SD_Info_Viewer
             {
                 Clipboard.SetText(stringToCopy);
             }
-            
+
             // Status Update
             updateStatusBox("Prompt + Neg copied to clipboard");
         }
@@ -863,7 +969,7 @@ namespace PNG_SD_Info_Viewer
         private void updateTagBox(string selectedImage)
         {
             bool found = false;
-            
+
             // Show tag if the image is in our tag list
             foreach (string s in taggedImages)
             {
@@ -885,7 +991,7 @@ namespace PNG_SD_Info_Viewer
             // Found, so checked
             if (found == true)
             {
-               chkTag.Checked = true;
+                chkTag.Checked = true;
             }
 
         }
@@ -913,7 +1019,7 @@ namespace PNG_SD_Info_Viewer
                 // Save tagged images
                 foreach (string s in taggedImages)
                 {
-                    
+
                     if (File.Exists(saveToPath + "\\" + s) == false)
                     {
                         txtParameters.Text += "Copying: " + s + " to: " + saveToPath + "\r\n";
@@ -935,21 +1041,21 @@ namespace PNG_SD_Info_Viewer
             {
                 // Ensure a picture is even loaded
                 if (picbImageDisplay.Image == null) { return; }
-                
+
                 // If already in 'zoom' view mode (which is actually the fullsize view)
                 if (picbImageDisplay.SizeMode == PictureBoxSizeMode.Zoom)
                 {
                     // Change to non-zoom mode, called Normal.  This puts the image at its true 1:1 resolution and size.
                     picbImageDisplay.SizeMode = PictureBoxSizeMode.Normal;
-                    
+
                     // Resize the picturebox to match the new image size
                     picbImageDisplay.Width = picbImageDisplay.Image.Width;
-                    picbImageDisplay.Height= picbImageDisplay.Image.Height;
+                    picbImageDisplay.Height = picbImageDisplay.Image.Height;
 
                     // Put it at the center of the panel container
                     picbImageDisplay.Location = new Point((picbImageDisplay.Parent.ClientSize.Width / 2) - (picbImageDisplay.Width / 2),
                               (picbImageDisplay.Parent.ClientSize.Height / 2) - (picbImageDisplay.Height / 2));
-                    
+
                     // Refresh
                     picbImageDisplay.Refresh();
 
@@ -994,7 +1100,7 @@ namespace PNG_SD_Info_Viewer
             {
                 lblStatus.ForeColor = SystemColors.ControlText;
             }
-            
+
             lblStatus.Text = s;
             labelFader.Start();
         }
@@ -1035,8 +1141,8 @@ namespace PNG_SD_Info_Viewer
         }
 
 
-            // Resets the picturebox in the panel to normal view
-            private void resetPB()
+        // Resets the picturebox in the panel to normal view
+        private void resetPB()
         {
             // Change dimensions to fit panel
             picbImageDisplay.Width = panMain.Width;
@@ -1055,8 +1161,9 @@ namespace PNG_SD_Info_Viewer
         private void picbImageDisplay_MouseMove(object sender, MouseEventArgs e)
         {
             // Simple null check, but should never be null anyways
-            if (sender != null) { 
-            Control? c = sender as Control;             // Added "?" to allow nullable to correct intellisense error
+            if (sender != null)
+            {
+                Control? c = sender as Control;             // Added "?" to allow nullable to correct intellisense error
                 // Are we dragging the mouse with the button held down?
                 if (isMouseDragging && c != null)
                 {
@@ -1212,8 +1319,8 @@ namespace PNG_SD_Info_Viewer
         private void setMenuChecks()
         {
             if (imageColumnActive == true) { imageToolStripMenuItem.Checked = true; } else { imageToolStripMenuItem.Checked = false; }
-            if (createDateColumnActive == true) { createdDateToolStripMenuItem.Checked =true; } else { createdDateToolStripMenuItem.Checked = false; }
-            if (modifiedDateColumnActive == true) { modifiedDateToolStripMenuItem.Checked=true; } else { modifiedDateToolStripMenuItem.Checked = false; }
+            if (createDateColumnActive == true) { createdDateToolStripMenuItem.Checked = true; } else { createdDateToolStripMenuItem.Checked = false; }
+            if (modifiedDateColumnActive == true) { modifiedDateToolStripMenuItem.Checked = true; } else { modifiedDateToolStripMenuItem.Checked = false; }
             if (modelHashColumnActive == true) { modelHashToolStripMenuItem.Checked = true; } else { modelHashToolStripMenuItem.Checked = false; }
             if (modelNameColumnActive == true) { modelToolStripMenuItem.Checked = true; } else { modelToolStripMenuItem.Checked = false; }
             if (seedColumnActive == true) { seedToolStripMenuItem.Checked = true; } else { seedToolStripMenuItem.Checked = false; }
@@ -1223,7 +1330,7 @@ namespace PNG_SD_Info_Viewer
         public async Task saveSettings()
         {
             string viewMode = "simple";
-            if(dgvMain.Visible == true)
+            if (dgvMain.Visible == true)
             {
                 viewMode = "detailed";
             }
@@ -1292,12 +1399,12 @@ namespace PNG_SD_Info_Viewer
                     dgvMain.Visible = true;
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show("Your config file is corrupt.  It is suggested to remove it.  A new one will be generated the next time you launch the program." + ex.ToString());
                 return;
             }
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1305,14 +1412,14 @@ namespace PNG_SD_Info_Viewer
             loadSettings();
         }
 
-       
+
 
         private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveSettings();
         }
 
-      
+
 
         public void SetWallpaper(Style style, bool clearWallpaper)
         {
@@ -1356,7 +1463,7 @@ namespace PNG_SD_Info_Viewer
 
             string tempPath = openPath + "\\" + selectedImage;
 
-            
+
 
 
 
@@ -1403,7 +1510,7 @@ namespace PNG_SD_Info_Viewer
                 key.SetValue(@"TileWallpaper", 0.ToString());
             }
 
-            SystemParametersInfo(SPI_SETDESKWALLPAPER,0,tempPath,SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
+            SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, tempPath, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
 
 
             updateStatusBox("Setting Wallpaper");
@@ -1426,7 +1533,7 @@ namespace PNG_SD_Info_Viewer
 
         private void stretchedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetWallpaper(Style.Stretched,false);
+            SetWallpaper(Style.Stretched, false);
         }
 
         private void tiledToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1456,14 +1563,14 @@ namespace PNG_SD_Info_Viewer
 
         private void lightMode()
         {
-            
-            
+
+
             // Form
             this.BackColor = SystemColors.Control;
 
             // Panels
             panMain.BackColor = SystemColors.Control;
-            
+
             splitContainer1.BackColor = SystemColors.ControlLight;
             splitContainer1.Panel1.BackColor = SystemColors.Control;
             splitContainer1.Panel2.BackColor = SystemColors.Control;
@@ -1479,7 +1586,7 @@ namespace PNG_SD_Info_Viewer
 
             // Buttons
             btnCopy.FlatStyle = FlatStyle.Standard;
-            btnCopy.BackColor = SystemColors.Control; 
+            btnCopy.BackColor = SystemColors.Control;
             btnCopy.ForeColor = SystemColors.ControlText;
 
             btnCopyImage.FlatStyle = FlatStyle.Standard;
@@ -1530,19 +1637,19 @@ namespace PNG_SD_Info_Viewer
             lstbFilelist.BackColor = SystemColors.Window;
             lstbFilelist.ForeColor = SystemColors.WindowText;
             lstbFilelist.BorderStyle = BorderStyle.Fixed3D;
-            
+
 
             dgvMain.BackColor = SystemColors.Control;
             dgvMain.ForeColor = SystemColors.ControlText;
             dgvMain.BackgroundColor = SystemColors.ControlDark;
 
-            
+
             dgvMain.DefaultCellStyle.ForeColor = SystemColors.ControlText;
             dgvMain.DefaultCellStyle.BackColor = SystemColors.Window;
             dgvMain.EnableHeadersVisualStyles = true;
 
             dgvMain.DefaultCellStyle.SelectionBackColor = Color.Gray;
-            
+
 
             // Txts
             txtParameters.BackColor = SystemColors.Window;
@@ -1557,7 +1664,7 @@ namespace PNG_SD_Info_Viewer
         {
             // Form
             this.BackColor = Color.Black;
-            
+
             // Panels
             panMain.BackColor = Color.Black;
 
@@ -1575,7 +1682,7 @@ namespace PNG_SD_Info_Viewer
             // Menu
             menuStrip1.BackColor = Color.Black;
             menuStrip1.ForeColor = Color.DarkGray;
-            
+
 
             // Buttons
             btnCopy.FlatStyle = FlatStyle.Flat;
@@ -1629,29 +1736,29 @@ namespace PNG_SD_Info_Viewer
             // Tag box
             chkTag.BackColor = Color.Black;
             chkTag.ForeColor = Color.LightGray;
-            chkTag.FlatStyle= FlatStyle.Flat;
-            
+            chkTag.FlatStyle = FlatStyle.Flat;
+
             // Lists
             lstbFilelist.BackColor = Color.Black;
             lstbFilelist.ForeColor = Color.Gray;
-            lstbFilelist.BorderStyle= BorderStyle.None;
-            
+            lstbFilelist.BorderStyle = BorderStyle.None;
+
 
             dgvMain.BackColor = Color.Black;
             dgvMain.ForeColor = Color.LightGray;
-            dgvMain.BackgroundColor= Color.Black;
+            dgvMain.BackgroundColor = Color.Black;
 
             dgvMain.ColumnHeadersDefaultCellStyle.ForeColor = Color.LightGray;
             dgvMain.ColumnHeadersDefaultCellStyle.BackColor = Color.DimGray;
             dgvMain.EnableHeadersVisualStyles = false;
-            dgvMain.DefaultCellStyle.ForeColor= Color.DimGray;
+            dgvMain.DefaultCellStyle.ForeColor = Color.DimGray;
             dgvMain.DefaultCellStyle.BackColor = Color.Black;
 
 
             // Txts
             txtParameters.BackColor = Color.Black;
             txtParameters.ForeColor = Color.Gray;
-            txtParameters.BorderStyle= BorderStyle.FixedSingle;
+            txtParameters.BorderStyle = BorderStyle.FixedSingle;
 
             UIviewMode = "darkmode";
 
@@ -1665,6 +1772,44 @@ namespace PNG_SD_Info_Viewer
         private void darkModeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             darkMode();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvMain_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void folderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Grab the folder from a dialog box
+            var fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                // TODO - do I need this?  Got a new folder so clear the stuffs
+                //lstbFilelist.Items.Clear();
+                //txtParameters.Text = "";
+                //picbImageDisplay.Image = null;
+
+                // Store the path selected, it comes in handy.
+                openPath = fbd.SelectedPath;
+
+                // Show the selected path in the UI
+                lblFolderSelected.Text = openPath;
+
+                // Go find images!
+                findImagesInDirectory(fbd.SelectedPath);
+            }
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            txtParameters.Text = "(Modified by Toad 7/10/2023). PNG-SD-Info-Viewer is a program designed to quickly allow the browsing of PNG files with associated metadata from Stable Diffusion generated images.\r\nIt now also allows quick image tagging so favorites can be copied out to a new location.\r\nThere is a filename list view, and, an image preview view.  Image preview size can be adjusted.\r\nMouse scrolling over the image will go to next or previous image.\r\nLeft-clicking on the image will zoom.\r\nHolding middle-mouse button and dragging will move the image.\r\nRight-clicking the image will copy the image to your clipboard.\r\n - By Omnia, the Garlic Cookie\r\nhttps://github.com/GarlicCookie/PNG-SD-Info-Viewer\r\nGNU GPL3";
         }
     }
 }
