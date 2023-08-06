@@ -226,9 +226,10 @@ namespace PNG_SD_Info_Viewer
                 if (filenameColumnActive == true) { dgvMain.Columns.Add(filenameColumn); }
                 if (createDateColumnActive == true) { dgvMain.Columns.Add(createdColumn); }
                 if (modifiedDateColumnActive == true) { dgvMain.Columns.Add(modifiedColumn); }
+                if (seedColumnActive == true) { dgvMain.Columns.Add(seedColumn); }
                 if (modelHashColumnActive == true) { dgvMain.Columns.Add(modelHashColumn); }
                 if (modelNameColumnActive == true) { dgvMain.Columns.Add(modelNameColumn); }
-                if (seedColumnActive == true) { dgvMain.Columns.Add(seedColumn); }
+
                 iconColumn.Name = "Images";
                 iconColumn.HeaderText = "Images:";
                 iconColumn.ImageLayout = DataGridViewImageCellLayout.Normal;
@@ -415,6 +416,21 @@ namespace PNG_SD_Info_Viewer
                                     foreach (string component in components)
                                     {
                                         // Check if column is active
+                                        if (seedColumnActive == true)
+                                        {
+                                            // If the string is at least 12 long, and starts this way, we found our column
+                                            if ((component.Length >= 6) && (component.Substring(0, 6) == "Seed: "))
+                                            {
+                                                // Add to column
+                                                string seedTrim = component.Replace(",", "");
+                                                seedTrim = seedTrim.Replace("Seed: ", "");
+                                                dgvMain.Rows[j].Cells[cellCol].Value = seedTrim;
+                                                cellCol++;
+
+                                            }
+                                        }
+
+                                        // Check if model hash column is active
                                         if (modelHashColumnActive == true)
                                         {
                                             // If the string is at least 12 long, and starts this way, we found our column
@@ -428,7 +444,7 @@ namespace PNG_SD_Info_Viewer
 
                                             }
                                         }
-                                        // Check if column is active
+                                        // Check if model name column is active
                                         if (modelNameColumnActive == true)
                                         {
                                             bool controlnetModel = false;
@@ -451,20 +467,7 @@ namespace PNG_SD_Info_Viewer
 
                                             }
                                         }
-                                        // Check if column is active
-                                        if (seedColumnActive == true)
-                                        {
-                                            // If the string is at least 12 long, and starts this way, we found our column
-                                            if ((component.Length >= 6) && (component.Substring(0, 6) == "Seed: "))
-                                            {
-                                                // Add to column
-                                                string seedTrim = component.Replace(",", "");
-                                                seedTrim = seedTrim.Replace("Seed: ", "");
-                                                dgvMain.Rows[j].Cells[cellCol].Value = seedTrim;
-                                                cellCol++;
 
-                                            }
-                                        }
                                     }
                                 }
 
