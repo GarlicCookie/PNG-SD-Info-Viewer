@@ -563,15 +563,35 @@ namespace PNG_SD_Info_Viewer
                 return;
             }
             
+            // Sets the picturebox to load synchronously so the UI doesn't update until loaded.  This helps prevent errors.
+            picbImageDisplay.WaitOnLoad = true;
+            
             // Set the picturebox to display the image based on the stored path plus the selected filename
             picbImageDisplay.ImageLocation = openPath + "\\" + selectedImage;
+            //Application.DoEvents(); - not needed, added exception check
 
             // Reset the picturebox style and location
             resetPB();
 
+            // Grab dimensions
+            string w = "";
+            string h = "";
+            
+            
+            if (picbImageDisplay.Image != null)
+            {
+                w = picbImageDisplay.Image.Width.ToString();
+                h = picbImageDisplay.Image.Height.ToString();
+            }
+            else
+            {
+                w = "0";
+                h = "0";
+            }
             // Show the selected filename on the UI
-            lblFilename.Text = selectedImage;
+            lblFilename.Text = selectedImage + ", " + w + "x" + h;
 
+            
             // Show the tag checkbox accordingly
             updateTagBox(selectedImage);
 
