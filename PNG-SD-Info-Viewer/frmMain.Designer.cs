@@ -104,7 +104,7 @@
             // picbImageDisplay
             // 
             this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picbImageDisplay.Location = new System.Drawing.Point(288, 80);
+            this.picbImageDisplay.Location = new System.Drawing.Point(411, 159);
             this.picbImageDisplay.Name = "picbImageDisplay";
             this.picbImageDisplay.Size = new System.Drawing.Size(261, 180);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -134,7 +134,7 @@
             this.txtParameters.Multiline = true;
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtParameters.Size = new System.Drawing.Size(851, 113);
+            this.txtParameters.Size = new System.Drawing.Size(1094, 175);
             this.txtParameters.TabIndex = 3;
             // 
             // lblFilesInFolder
@@ -178,9 +178,9 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(733, 11);
+            this.btnCopy.Location = new System.Drawing.Point(889, 11);
             this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(122, 25);
+            this.btnCopy.Size = new System.Drawing.Size(209, 25);
             this.btnCopy.TabIndex = 8;
             this.btnCopy.Text = "Copy All Text";
             this.btnCopy.UseVisualStyleBackColor = true;
@@ -200,7 +200,7 @@
             this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1225, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1424, 24);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "txt";
             // 
@@ -508,9 +508,9 @@
             // btnCopyPrompt
             // 
             this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyPrompt.Location = new System.Drawing.Point(478, 11);
+            this.btnCopyPrompt.Location = new System.Drawing.Point(459, 11);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
-            this.btnCopyPrompt.Size = new System.Drawing.Size(122, 25);
+            this.btnCopyPrompt.Size = new System.Drawing.Size(209, 25);
             this.btnCopyPrompt.TabIndex = 13;
             this.btnCopyPrompt.Text = "Copy Prompt";
             this.btnCopyPrompt.UseVisualStyleBackColor = true;
@@ -519,9 +519,9 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(605, 11);
+            this.button1.Location = new System.Drawing.Point(674, 11);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(122, 25);
+            this.button1.Size = new System.Drawing.Size(209, 25);
             this.button1.TabIndex = 14;
             this.button1.Text = "Copy Prompt + Neg";
             this.button1.UseVisualStyleBackColor = true;
@@ -532,7 +532,7 @@
             this.chkTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkTag.AutoSize = true;
             this.chkTag.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkTag.Location = new System.Drawing.Point(1143, 30);
+            this.chkTag.Location = new System.Drawing.Point(1342, 30);
             this.chkTag.Name = "chkTag";
             this.chkTag.Size = new System.Drawing.Size(67, 19);
             this.chkTag.TabIndex = 15;
@@ -551,7 +551,7 @@
             this.panMain.Controls.Add(this.picbImageDisplay);
             this.panMain.Location = new System.Drawing.Point(4, 18);
             this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(852, 380);
+            this.panMain.Size = new System.Drawing.Size(1099, 538);
             this.panMain.TabIndex = 16;
             this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
             // 
@@ -560,7 +560,7 @@
             this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblLoading.AutoSize = true;
-            this.lblLoading.Location = new System.Drawing.Point(244, 336);
+            this.lblLoading.Location = new System.Drawing.Point(244, 494);
             this.lblLoading.Name = "lblLoading";
             this.lblLoading.Size = new System.Drawing.Size(144, 15);
             this.lblLoading.TabIndex = 19;
@@ -571,10 +571,10 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(244, 353);
+            this.progressBar1.Location = new System.Drawing.Point(244, 511);
             this.progressBar1.MinimumSize = new System.Drawing.Size(100, 23);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(368, 23);
+            this.progressBar1.Size = new System.Drawing.Size(615, 23);
             this.progressBar1.TabIndex = 18;
             this.progressBar1.Visible = false;
             // 
@@ -588,7 +588,7 @@
             this.lstbFilelist.ItemHeight = 15;
             this.lstbFilelist.Location = new System.Drawing.Point(3, 18);
             this.lstbFilelist.Name = "lstbFilelist";
-            this.lstbFilelist.Size = new System.Drawing.Size(275, 574);
+            this.lstbFilelist.Size = new System.Drawing.Size(275, 769);
             this.lstbFilelist.TabIndex = 2;
             this.lstbFilelist.SelectedIndexChanged += new System.EventHandler(this.lstbFilelist_SelectedIndexChanged);
             // 
@@ -612,7 +612,7 @@
             this.dgvMain.RowTemplate.Height = 50;
             this.dgvMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.Size = new System.Drawing.Size(275, 597);
+            this.dgvMain.Size = new System.Drawing.Size(275, 769);
             this.dgvMain.TabIndex = 11;
             this.dgvMain.Visible = false;
             this.dgvMain.SelectionChanged += new System.EventHandler(this.dgvMain_SelectionChanged);
@@ -638,7 +638,7 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1201, 620);
+            this.splitContainer1.Size = new System.Drawing.Size(1400, 794);
             this.splitContainer1.SplitterDistance = 281;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 17;
@@ -671,8 +671,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnCopy);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopyPrompt);
             this.splitContainer2.Panel2.Controls.Add(this.lblParameters);
-            this.splitContainer2.Size = new System.Drawing.Size(858, 614);
-            this.splitContainer2.SplitterDistance = 401;
+            this.splitContainer2.Size = new System.Drawing.Size(1105, 788);
+            this.splitContainer2.SplitterDistance = 559;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 17;
             // 
@@ -680,7 +680,7 @@
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblStatus.Location = new System.Drawing.Point(479, 0);
+            this.lblStatus.Location = new System.Drawing.Point(726, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(376, 15);
             this.lblStatus.TabIndex = 18;
@@ -690,9 +690,9 @@
             // btnCopyImage
             // 
             this.btnCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyImage.Location = new System.Drawing.Point(349, 11);
+            this.btnCopyImage.Location = new System.Drawing.Point(244, 11);
             this.btnCopyImage.Name = "btnCopyImage";
-            this.btnCopyImage.Size = new System.Drawing.Size(122, 25);
+            this.btnCopyImage.Size = new System.Drawing.Size(209, 25);
             this.btnCopyImage.TabIndex = 15;
             this.btnCopyImage.Text = "Copy Image";
             this.btnCopyImage.UseVisualStyleBackColor = true;
@@ -701,7 +701,7 @@
             // frmMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1225, 687);
+            this.ClientSize = new System.Drawing.Size(1424, 861);
             this.Controls.Add(this.lblFolderSelected);
             this.Controls.Add(this.chkTag);
             this.Controls.Add(this.btnSelectFolder);
