@@ -19,7 +19,7 @@ Features:
  - Easy image dimensions visibility
  - Customizable view options, sortable by model, seed, etc.
  - Configuration can be saved to disk, so you can use your favorite mode and view instantly
- - Easily set your desktop wallpaper, or clear it
+ - Easily set your desktop wallpaper in various modes, or clear it
  - Dark mode
 
 
