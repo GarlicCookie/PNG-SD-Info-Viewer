@@ -93,10 +93,92 @@ namespace PNG_SD_Info_Viewer
             // Fire up the mousewheel detection on the picturebox
             picbImageDisplay.MouseWheel += PicbImageDisplay_MouseWheel;
 
+            //Setup events for drag & drop
+            AllowDrop = true;
+            DragEnter += new DragEventHandler(frmMain_DragEnter);
+            DragDrop += new DragEventHandler(frmMain_DragDrop);
         }
 
-        // Mousewheel detection
-        private void PicbImageDisplay_MouseWheel(object? sender, MouseEventArgs e)
+        // Drag and drop a file event handler for the form, entering the form with a file
+        private void frmMain_DragEnter(object? sender, DragEventArgs e)
+        {
+            // Sets the cursor to the plus-sign mouse cursor to show there is a drag and drop operation
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+
+            
+        }
+
+        // Drag and drop a file event handler for the form, actual drop
+        private void frmMain_DragDrop(object? sender, DragEventArgs e)
+        {
+            // If drag and drop object is null just exist the function
+            if (e == null) { return; }
+
+            // If we've moved in a FileDrop
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Grab the list of files into an array
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                
+                // Grab just the first entry.  Can't handle a selection of multiple.  But someone will try it, so we grab the first.
+                string path = files[0];
+
+                // Check if the path is a directory or a file
+                if (System.IO.Directory.Exists(path))
+                {
+                    // The path is a directory
+                    // Store the path selected, it comes in handy.
+                    openPath = path;
+
+                    // Show the selected path in the UI
+                    lblFolderSelected.Text = path;
+
+                    // Go find images!
+                    findImagesInDirectory(path);
+
+                    
+                }
+                else if (File.Exists(path))
+                {
+                    // The path is a file
+
+                    // Check to make sure it is an image file
+                    string draggedExt = Path.GetExtension(path).ToLower();
+                    if (draggedExt != ".jpg" && draggedExt != ".png" && draggedExt != ".jpeg")
+                    {
+                        txtParameters.Text = "You dragged in a file with extension: " + draggedExt.ToString();
+                        txtParameters.Text += "\r\nDragged files must be JPG or PNG files.";
+                        return;
+                    }
+
+                    // If we wanted to change to the selected file's folder, we could extract the directory path from it
+                    // However, I think we should stay on the existing folder, and just display the dragged in file until we move out
+                    // So we store the current path and then flip back to it when done.
+                    string oldOpenPath = openPath;
+                    
+                    // Set the path so we can open the file in the update function
+                    openPath = Path.GetDirectoryName(path);
+
+                    // Clear the info box
+                    txtParameters.Text = "";
+
+                    // Update our picturebox and parameters boxes
+                    updateBoxes(Path.GetFileName(path));
+
+                    // Put it back to the previous path in memory so you can go back to selecting files in the box
+                    openPath = oldOpenPath;
+                }
+            }
+            }
+
+
+
+
+            // Mousewheel detection
+            private void PicbImageDisplay_MouseWheel(object? sender, MouseEventArgs e)
         {
             
             if (e.Delta < 0)
