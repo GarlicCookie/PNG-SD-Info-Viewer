@@ -104,7 +104,7 @@
             // picbImageDisplay
             // 
             this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picbImageDisplay.Location = new System.Drawing.Point(408, 156);
+            this.picbImageDisplay.Location = new System.Drawing.Point(407, 155);
             this.picbImageDisplay.Name = "picbImageDisplay";
             this.picbImageDisplay.Size = new System.Drawing.Size(261, 180);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -134,7 +134,7 @@
             this.txtParameters.Multiline = true;
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtParameters.Size = new System.Drawing.Size(1088, 175);
+            this.txtParameters.Size = new System.Drawing.Size(1086, 175);
             this.txtParameters.TabIndex = 3;
             // 
             // lblFilesInFolder
@@ -178,7 +178,7 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(883, 11);
+            this.btnCopy.Location = new System.Drawing.Point(881, 11);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(209, 25);
             this.btnCopy.TabIndex = 8;
@@ -508,7 +508,7 @@
             // btnCopyPrompt
             // 
             this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyPrompt.Location = new System.Drawing.Point(453, 11);
+            this.btnCopyPrompt.Location = new System.Drawing.Point(451, 11);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
             this.btnCopyPrompt.Size = new System.Drawing.Size(209, 25);
             this.btnCopyPrompt.TabIndex = 13;
@@ -519,7 +519,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(668, 11);
+            this.button1.Location = new System.Drawing.Point(666, 11);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(209, 25);
             this.button1.TabIndex = 14;
@@ -551,7 +551,7 @@
             this.panMain.Controls.Add(this.picbImageDisplay);
             this.panMain.Location = new System.Drawing.Point(4, 18);
             this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(1093, 532);
+            this.panMain.Size = new System.Drawing.Size(1091, 530);
             this.panMain.TabIndex = 16;
             this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
             // 
@@ -560,7 +560,7 @@
             this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblLoading.AutoSize = true;
-            this.lblLoading.Location = new System.Drawing.Point(244, 488);
+            this.lblLoading.Location = new System.Drawing.Point(244, 486);
             this.lblLoading.Name = "lblLoading";
             this.lblLoading.Size = new System.Drawing.Size(179, 20);
             this.lblLoading.TabIndex = 19;
@@ -571,10 +571,10 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(244, 505);
+            this.progressBar1.Location = new System.Drawing.Point(244, 503);
             this.progressBar1.MinimumSize = new System.Drawing.Size(100, 23);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(609, 23);
+            this.progressBar1.Size = new System.Drawing.Size(607, 23);
             this.progressBar1.TabIndex = 18;
             this.progressBar1.Visible = false;
             // 
@@ -671,8 +671,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnCopy);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopyPrompt);
             this.splitContainer2.Panel2.Controls.Add(this.lblParameters);
-            this.splitContainer2.Size = new System.Drawing.Size(1099, 788);
-            this.splitContainer2.SplitterDistance = 553;
+            this.splitContainer2.Size = new System.Drawing.Size(1097, 788);
+            this.splitContainer2.SplitterDistance = 551;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 17;
             // 
@@ -680,7 +680,7 @@
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblStatus.Location = new System.Drawing.Point(720, 0);
+            this.lblStatus.Location = new System.Drawing.Point(718, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(376, 15);
             this.lblStatus.TabIndex = 18;
@@ -690,7 +690,7 @@
             // btnCopyImage
             // 
             this.btnCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyImage.Location = new System.Drawing.Point(238, 11);
+            this.btnCopyImage.Location = new System.Drawing.Point(236, 11);
             this.btnCopyImage.Name = "btnCopyImage";
             this.btnCopyImage.Size = new System.Drawing.Size(209, 25);
             this.btnCopyImage.TabIndex = 15;
