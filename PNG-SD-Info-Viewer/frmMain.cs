@@ -689,7 +689,8 @@ namespace PNG_SD_Info_Viewer
                         //textBox1.Text += "\n";
 
                         // Parse text
-                        string parsed = ($"{tag.Description}").Replace("Negative prompt:", "\r\n\r\nNegative Prompt:");
+                        string parsed = ($"{tag.Description}").Replace("parameters: ", "");
+                        parsed = parsed.Replace("Negative prompt:", "\r\n\r\nNegative Prompt:");
                         parsed = parsed.Replace("Steps:", "\r\n\r\nSteps:");
                         parsed = parsed.Replace("Sampler:", "\r\nSampler:");
                         parsed = parsed.Replace("CFG scale:", "\r\nCFG scale:");
@@ -698,6 +699,9 @@ namespace PNG_SD_Info_Viewer
                         parsed = parsed.Replace("Model hash:", "\r\nModel hash:");
                         parsed = parsed.Replace("Model:", "\r\nModel:");
                         parsed = parsed.Replace("Denoising strength:", "\r\nDenoising strength:");
+                        parsed = parsed.Replace("VAE hash:", "\r\nVAE hash:");
+                        parsed = parsed.Replace("ADetailer model:", "\r\nADetailer model:");
+                        parsed = parsed.Replace("Clip skip:", "\r\nClip skip:");
 
                         // Update the textbox with the parsed string
                         txtParameters.Text += parsed;
@@ -830,7 +834,8 @@ namespace PNG_SD_Info_Viewer
 
             // Split the text at line breaks
             string[] components = s.Split("\r\n");
-            
+
+            /* - This has been disabled.  I got rid of the "parameters:" text since it is non-standard.  We can just take the first component in the split instead.
             // Loop through each split spot and pull out what we need
             foreach (string component in components)
             {
@@ -844,6 +849,15 @@ namespace PNG_SD_Info_Viewer
                     updateStatusBox("Prompt copied to clipboard");
                 }
             }
+            */
+
+            // Copy first component, which is always our positive prompt
+            Clipboard.SetText(components[0]);
+
+            updateStatusBox("Prompt copied to clipboard");
+
+
+        
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -858,15 +872,26 @@ namespace PNG_SD_Info_Viewer
             // Split the text at line breaks
             string[] components = s.Split("\r\n");
 
+            // Add positive prompt to string
+            stringToCopy += components[0];
+
+
             // Loop through each split spot and pull out what we need
+
+
             foreach (string component in components)
             {
+                /* - Disabled this first part... we don't check for "parameters" anymore, and just take the first split chunk as the positive prompt
                 // If the string is at least 12 long, and starts this way, we found our prompt
                 if ((component.Length >= 12) && (component.Substring(0, 12) == "parameters: "))
                 {
                     // Add to our copy string
                     stringToCopy += component;
                 }
+                */
+
+                
+
                 // If the string is at least 17 long, and starts this way, we found our negative prompt
                 if ((component.Length >= 17) && (component.Substring(0, 17) == "Negative Prompt: "))
                 {
