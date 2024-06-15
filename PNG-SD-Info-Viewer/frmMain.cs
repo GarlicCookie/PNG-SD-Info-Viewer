@@ -1236,7 +1236,51 @@ namespace PNG_SD_Info_Viewer
             }
         }
 
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openInExplorer()
+        {
+            // Set path to image
+            // Path via listbox
+            string selectedImage = lstbFilelist.GetItemText(lstbFilelist.SelectedItem);
+
+            // Path via DGV if seen
+            if (dgvMain.Visible == true)
+            {
+                foreach (DataGridViewRow selectedRow in dgvMain.SelectedRows)
+                {
+                    // If the value in the filename column isn't null (and it shouldn't be, it should have the filename text), then store the filename as a string.
+                    var dataGridViewColumn = dgvMain.Columns["Filename:"];
+                    int filenameIndex = 0;
+                    if (dataGridViewColumn != null)
+                    {
+                        filenameIndex = dgvMain.Columns.IndexOf(dataGridViewColumn);
+                    }
+
+                    if (dgvMain[filenameIndex, selectedRow.Index].Value != null)
+                    {
+                        selectedImage = dgvMain[filenameIndex, selectedRow.Index].Value.ToString()!;
+                    }
+
+                }
+            }
+
+            string useablePath = openPath + "\\" + selectedImage;
+
+            
+            if (!File.Exists(useablePath))
+            {
+                return;
+            }
+
+            // combine the arguments together
+            // it doesn't matter if there is a space after ','
+            string argument = "/select, \"" + useablePath + "\"";
+
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+
+
+        }
+
+            private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             refreshFolder();
         }
@@ -1795,6 +1839,11 @@ namespace PNG_SD_Info_Viewer
         private void darkModeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             darkMode();
+        }
+
+        private void openInExplorerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openInExplorer();
         }
     }
 }

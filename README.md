@@ -14,6 +14,7 @@ Features:
  - Easy copying to clipboard of text parameters, or the image itself
  - Quick "tagging" to help cull favorite images.  Tags are stored in memory only, and do NOT affect the files.
  - Quick "copy to folder" function to save all your favorites to a new folder
+ - Quick "Open in Explorer" option
  - Scrollwheel use to move quickly between images
  - View full generation metadata from images and quickly copy to clipboard
  - Easy image dimensions visibility

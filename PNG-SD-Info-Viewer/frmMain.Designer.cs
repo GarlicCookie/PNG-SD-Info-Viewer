@@ -42,6 +42,7 @@
             this.selectFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openInExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,7 +105,7 @@
             // picbImageDisplay
             // 
             this.picbImageDisplay.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.picbImageDisplay.Location = new System.Drawing.Point(407, 155);
+            this.picbImageDisplay.Location = new System.Drawing.Point(402, 150);
             this.picbImageDisplay.Name = "picbImageDisplay";
             this.picbImageDisplay.Size = new System.Drawing.Size(261, 180);
             this.picbImageDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -134,7 +135,7 @@
             this.txtParameters.Multiline = true;
             this.txtParameters.Name = "txtParameters";
             this.txtParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtParameters.Size = new System.Drawing.Size(1086, 175);
+            this.txtParameters.Size = new System.Drawing.Size(1076, 175);
             this.txtParameters.TabIndex = 3;
             // 
             // lblFilesInFolder
@@ -178,7 +179,7 @@
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(881, 11);
+            this.btnCopy.Location = new System.Drawing.Point(871, 11);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(209, 25);
             this.btnCopy.TabIndex = 8;
@@ -210,6 +211,7 @@
             this.selectFolderToolStripMenuItem,
             this.refreshToolStripMenuItem,
             this.saveSettingsToolStripMenuItem,
+            this.openInExplorerToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.quitToolStripMenuItem1});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -219,7 +221,7 @@
             // selectFolderToolStripMenuItem
             // 
             this.selectFolderToolStripMenuItem.Name = "selectFolderToolStripMenuItem";
-            this.selectFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.selectFolderToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.selectFolderToolStripMenuItem.Text = "Select &Folder";
             this.selectFolderToolStripMenuItem.Click += new System.EventHandler(this.btnSelectFolder_Click);
             // 
@@ -227,21 +229,29 @@
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // saveSettingsToolStripMenuItem
             // 
             this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
-            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.saveSettingsToolStripMenuItem.Text = "&Save Settings";
             this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
+            // 
+            // openInExplorerToolStripMenuItem
+            // 
+            this.openInExplorerToolStripMenuItem.Name = "openInExplorerToolStripMenuItem";
+            this.openInExplorerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.openInExplorerToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
+            this.openInExplorerToolStripMenuItem.Text = "Open In &Explorer";
+            this.openInExplorerToolStripMenuItem.Click += new System.EventHandler(this.openInExplorerToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(253, 26);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -249,7 +259,7 @@
             // 
             this.quitToolStripMenuItem1.Name = "quitToolStripMenuItem1";
             this.quitToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(180, 26);
+            this.quitToolStripMenuItem1.Size = new System.Drawing.Size(253, 26);
             this.quitToolStripMenuItem1.Text = "&Quit";
             this.quitToolStripMenuItem1.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -450,49 +460,49 @@
             // centeredToolStripMenuItem
             // 
             this.centeredToolStripMenuItem.Name = "centeredToolStripMenuItem";
-            this.centeredToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
+            this.centeredToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.centeredToolStripMenuItem.Text = "&Centered";
             this.centeredToolStripMenuItem.Click += new System.EventHandler(this.centeredToolStripMenuItem_Click);
             // 
             // stretchedToolStripMenuItem
             // 
             this.stretchedToolStripMenuItem.Name = "stretchedToolStripMenuItem";
-            this.stretchedToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
+            this.stretchedToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.stretchedToolStripMenuItem.Text = "&Stretched";
             this.stretchedToolStripMenuItem.Click += new System.EventHandler(this.stretchedToolStripMenuItem_Click);
             // 
             // tiledToolStripMenuItem
             // 
             this.tiledToolStripMenuItem.Name = "tiledToolStripMenuItem";
-            this.tiledToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
+            this.tiledToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.tiledToolStripMenuItem.Text = "&Tiled";
             this.tiledToolStripMenuItem.Click += new System.EventHandler(this.tiledToolStripMenuItem_Click);
             // 
             // fillToolStripMenuItem
             // 
             this.fillToolStripMenuItem.Name = "fillToolStripMenuItem";
-            this.fillToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
+            this.fillToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.fillToolStripMenuItem.Text = "&Fill";
             this.fillToolStripMenuItem.Click += new System.EventHandler(this.fillToolStripMenuItem_Click);
             // 
             // fitToolStripMenuItem
             // 
             this.fitToolStripMenuItem.Name = "fitToolStripMenuItem";
-            this.fitToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
+            this.fitToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.fitToolStripMenuItem.Text = "F&it";
             this.fitToolStripMenuItem.Click += new System.EventHandler(this.fitToolStripMenuItem_Click);
             // 
             // spanToolStripMenuItem
             // 
             this.spanToolStripMenuItem.Name = "spanToolStripMenuItem";
-            this.spanToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
+            this.spanToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.spanToolStripMenuItem.Text = "S&pan";
             this.spanToolStripMenuItem.Click += new System.EventHandler(this.spanToolStripMenuItem_Click);
             // 
             // clearWallpaperToolStripMenuItem
             // 
             this.clearWallpaperToolStripMenuItem.Name = "clearWallpaperToolStripMenuItem";
-            this.clearWallpaperToolStripMenuItem.Size = new System.Drawing.Size(198, 26);
+            this.clearWallpaperToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.clearWallpaperToolStripMenuItem.Text = "Clea&r Wallpaper";
             this.clearWallpaperToolStripMenuItem.Click += new System.EventHandler(this.clearWallpaperToolStripMenuItem_Click);
             // 
@@ -508,7 +518,7 @@
             // btnCopyPrompt
             // 
             this.btnCopyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyPrompt.Location = new System.Drawing.Point(451, 11);
+            this.btnCopyPrompt.Location = new System.Drawing.Point(441, 11);
             this.btnCopyPrompt.Name = "btnCopyPrompt";
             this.btnCopyPrompt.Size = new System.Drawing.Size(209, 25);
             this.btnCopyPrompt.TabIndex = 13;
@@ -519,7 +529,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(666, 11);
+            this.button1.Location = new System.Drawing.Point(656, 11);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(209, 25);
             this.button1.TabIndex = 14;
@@ -551,7 +561,7 @@
             this.panMain.Controls.Add(this.picbImageDisplay);
             this.panMain.Location = new System.Drawing.Point(4, 18);
             this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(1091, 530);
+            this.panMain.Size = new System.Drawing.Size(1081, 520);
             this.panMain.TabIndex = 16;
             this.panMain.Resize += new System.EventHandler(this.panMain_Resize);
             // 
@@ -560,7 +570,7 @@
             this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblLoading.AutoSize = true;
-            this.lblLoading.Location = new System.Drawing.Point(244, 486);
+            this.lblLoading.Location = new System.Drawing.Point(244, 476);
             this.lblLoading.Name = "lblLoading";
             this.lblLoading.Size = new System.Drawing.Size(179, 20);
             this.lblLoading.TabIndex = 19;
@@ -571,10 +581,10 @@
             // 
             this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(244, 503);
+            this.progressBar1.Location = new System.Drawing.Point(244, 493);
             this.progressBar1.MinimumSize = new System.Drawing.Size(100, 23);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(607, 23);
+            this.progressBar1.Size = new System.Drawing.Size(597, 23);
             this.progressBar1.TabIndex = 18;
             this.progressBar1.Visible = false;
             // 
@@ -671,8 +681,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.btnCopy);
             this.splitContainer2.Panel2.Controls.Add(this.btnCopyPrompt);
             this.splitContainer2.Panel2.Controls.Add(this.lblParameters);
-            this.splitContainer2.Size = new System.Drawing.Size(1097, 788);
-            this.splitContainer2.SplitterDistance = 551;
+            this.splitContainer2.Size = new System.Drawing.Size(1087, 788);
+            this.splitContainer2.SplitterDistance = 541;
             this.splitContainer2.SplitterWidth = 6;
             this.splitContainer2.TabIndex = 17;
             // 
@@ -680,7 +690,7 @@
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblStatus.Location = new System.Drawing.Point(718, 0);
+            this.lblStatus.Location = new System.Drawing.Point(708, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(376, 15);
             this.lblStatus.TabIndex = 18;
@@ -690,7 +700,7 @@
             // btnCopyImage
             // 
             this.btnCopyImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyImage.Location = new System.Drawing.Point(236, 11);
+            this.btnCopyImage.Location = new System.Drawing.Point(226, 11);
             this.btnCopyImage.Name = "btnCopyImage";
             this.btnCopyImage.Size = new System.Drawing.Size(209, 25);
             this.btnCopyImage.TabIndex = 15;
@@ -795,5 +805,6 @@
         private ToolStripMenuItem lightModeToolStripMenuItem;
         private ToolStripMenuItem darkModeToolStripMenuItem;
         private ToolStripMenuItem selectFolderToolStripMenuItem;
+        private ToolStripMenuItem openInExplorerToolStripMenuItem;
     }
 }
